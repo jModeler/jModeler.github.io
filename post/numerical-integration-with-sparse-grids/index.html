@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Journeyman Modeler">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="I recently read a paper (Heiss and Winschel 2008) that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error (Skrainka and Judd 2011). This post attempts to demonstrate the claim in Skrainka and Judd (2011) using two very simple integrals, to which we already know the value.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/numerical-integration-with-sparse-grids/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="hsl(339, 90%, 68%)">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light" disabled>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="../../css/academic.min.ef95877d47e309682d2f04bdaf1ed0ed.css">
+
+  
+
+  
+  
+  
+
+  
+
+  
+
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/numerical-integration-with-sparse-grids/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Journeyman Modeler">
+  <meta property="og:url" content="/post/numerical-integration-with-sparse-grids/">
+  <meta property="og:title" content="Numerical Integration With Sparse Grids | Journeyman Modeler">
+  <meta property="og:description" content="I recently read a paper (Heiss and Winschel 2008) that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error (Skrainka and Judd 2011). This post attempts to demonstrate the claim in Skrainka and Judd (2011) using two very simple integrals, to which we already know the value."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-07-28T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-07-31T20:51:23-04:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Numerical Integration With Sparse Grids | Journeyman Modeler</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="dark">
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Journeyman Modeler</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="../../#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="../../#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Numerical Integration With Sparse Grids</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2019-07-28 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2019-07-31 20:51:23 -0400 EDT" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    <time>Jul 31, 2019</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="../../categories/scientific-computing/">Scientific Computing</a></span>
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/numerical-integration-with-sparse-grids/&amp;text=Numerical%20Integration%20With%20Sparse%20Grids" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/numerical-integration-with-sparse-grids/&amp;t=Numerical%20Integration%20With%20Sparse%20Grids" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Numerical%20Integration%20With%20Sparse%20Grids&amp;body=/post/numerical-integration-with-sparse-grids/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/numerical-integration-with-sparse-grids/&amp;title=Numerical%20Integration%20With%20Sparse%20Grids" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Numerical%20Integration%20With%20Sparse%20Grids%20/post/numerical-integration-with-sparse-grids/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/numerical-integration-with-sparse-grids/&amp;title=Numerical%20Integration%20With%20Sparse%20Grids" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>I recently read a paper <span class="citation">(Heiss and Winschel <a href="#ref-heiss2008likelihood">2008</a>)</span> that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error <span class="citation">(Skrainka and Judd <a href="#ref-skrainka2011high">2011</a>)</span>. This post attempts to demonstrate the claim in <span class="citation">Skrainka and Judd (<a href="#ref-skrainka2011high">2011</a>)</span> using two very simple integrals, to which we already know the value. I attempt to compare the outcomes from using MC and SG.</p>
+<p>The integrals I’ll be evaluating are:</p>
+<p><span class="math display">\[
+\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dX 
+\]</span>
+and
+<span class="math display">\[
+\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dX 
+\]</span>
+where <span class="math inline">\(X = \{x_i\}_{i=1}^{5}\)</span> is a five dimensional random variable, which is distributed according to the multivariate standard normal:
+<span class="math display">\[
+X \sim N\left( \left[ \begin{array}
+{r}
+0  \\
+0  \\
+0  \\
+0  \\
+0  \\
+\end{array}\right], \left[ \begin{array}
+{rrrrr}
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0   \\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0  \\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0  \\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0  \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1  \\
+\end{array}\right] \right)
+\]</span></p>
+<p>Given the distribution of <span class="math inline">\(X\)</span>, the values of the integrals above are easily obtained from standard results (they are <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>) respectively.</p>
+<p>I write some utility functions in R to compute the integrands above:</p>
+<pre class="r"><code>#function to compute the sum of components of the random vector
+s &lt;- function(x)
+{
+  return(sum(x))
+}
+
+#function to compute the square product of the components of the random vector
+p &lt;- function(x)
+{
+  return(prod(x^2))
+}</code></pre>
+<p>I now write a function that:</p>
+<ul>
+<li>Simulates a certain number of draws from the distribution of the random variable <span class="math inline">\(X\)</span></li>
+<li>Computes the integrand function using each of these draws as input</li>
+<li>Takes the average of the values computed in the previous step</li>
+</ul>
+<p>This function, in effect, would give us the approximate value of the integral via MC methodology.</p>
+<p>The code is provided below, note that I use the <tt><a href="https://cran.r-project.org/web/packages/mvtnorm/index.html">mvtnorm</a></tt> package to create random draws.</p>
+<pre class="r"><code>library(mvtnorm)
+
+#Function to calculate the MC approximation for the integral
+mc_int &lt;- function(s, n, mu, sigma)
+{
+  #generate random draws
+  x &lt;- rmvnorm(n, mean = mu, sigma = sigma)
+  #now get the integral
+  mc_int_n &lt;- mean(apply(x, 1, s))
+  return(mc_int_n)
+}
+
+set.seed(100)
+n &lt;- 1000
+mc_val &lt;- mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+mc_val</code></pre>
+<pre><code>## [1] 0.007150433</code></pre>
+<p>The result, 0.00715 is not far off from the true value of <span class="math inline">\(0\)</span> at first glance, however, we need to compare this to the result from the SG approach.</p>
+<p>R has a package that generates sparse grids for numerical integration as described in <span class="citation">Heiss and Winschel (<a href="#ref-heiss2008likelihood">2008</a>)</span>, called <tt><a href="https://cran.r-project.org/web/packages/SparseGrid/index.html">SparseGrid</a></tt>. We now use the nodes and weights generated from this package to approximate the first integral.
+I re-use some of the code provided in the documentation for the <tt><a href="https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf">SparseGrid</a></tt> package in R.</p>
+<pre class="r"><code>library(SparseGrid)
+
+#generate sparse grids for a 5 dimensional RV with accuracy level 2
+sg &lt;- createSparseGrid(type=&#39;KPN&#39;, dimension=5, k=2)
+
+
+sg_int &lt;- function(func, sg, ...)
+{
+  gx &lt;- apply(sg$nodes, 1, function(x) {func(x, ...)})
+  return(sum(gx * sg$weights))
+}
+
+sg_val &lt;- sg_int(s, sg)
+sg_val</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>The result here is exactly 0. In light of this finding, the value obtained from the MC approach, in comparison, is a little off, and tends to show a high variance in output:</p>
+<pre class="r"><code>set.seed(100)
+
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 0.007150433</code></pre>
+<pre class="r"><code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 0.03162326</code></pre>
+<pre class="r"><code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] -0.1287932</code></pre>
+<pre class="r"><code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 0.01040134</code></pre>
+<pre class="r"><code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] -0.03798655</code></pre>
+<p>In the third case, there is a <span class="math inline">\(-12\%\)</span> error(!) in the value of the computed integral when compared to the result from the SG approach. The SG approach, in addition, shows no such variation in repeated runs, since the grid values and weights are fixed for a given accuracy level and dimension (of the variable being integrated).</p>
+<p>I repeat the calculations for the second integral, as shown below</p>
+<p>MC approach:</p>
+<pre class="r"><code>set.seed(100)
+n &lt;- 1000
+mc_val &lt;- mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+mc_val</code></pre>
+<pre><code>## [1] 1.001089</code></pre>
+<p>SG approach:</p>
+<pre class="r"><code>#generate sparse grids for a 5 dimensional RV with accuracy level 6
+sg &lt;- createSparseGrid(type=&#39;KPN&#39;, dimension=5, k=6)
+sg_val &lt;- sg_int(p, sg)
+sg_val</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>Once again, the SG approach gives us an exact value (note that the value of <span class="math inline">\(k\)</span>, the accuracy level, has gone up, since the integrand is a higher order function). Again, the difference of the results between the two approaches doesn’t seem that large. However, variability of the results from the MC approach is still a concern, as shown below:</p>
+<pre class="r"><code>set.seed(100)
+
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 1.001089</code></pre>
+<pre class="r"><code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 0.4672555</code></pre>
+<pre class="r"><code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 1.14692</code></pre>
+<pre class="r"><code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 1.062975</code></pre>
+<pre class="r"><code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))</code></pre>
+<pre><code>## [1] 0.9112416</code></pre>
+<p>In the second case, there is a roughly <span class="math inline">\(53\%\)</span> (!!) error when compared to the true value of the integral. This variability could be worse with more complicated integrands.</p>
+<p>One suggestion to reduce variability in MC methods is to increase the number of draws, but that would entail a lot of calculations and result in longer runtimes.</p>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-mvt">
+<p>Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2019. <em>mvtnorm: Multivariate Normal and T Distributions</em>. <a href="https://CRAN.R-project.org/package=mvtnorm">https://CRAN.R-project.org/package=mvtnorm</a>.</p>
+</div>
+<div id="ref-heiss2008likelihood">
+<p>Heiss, Florian, and Viktor Winschel. 2008. “Likelihood Approximation by Numerical Integration on Sparse Grids.” <em>Journal of Econometrics</em> 144 (1): 62–80.</p>
+</div>
+<div id="ref-skrainka2011high">
+<p>Skrainka, Benjamin S, and Kenneth L Judd. 2011. “High Performance Quadrature Rules: How Numerical Integration Affects a Popular Model of Product Differentiation.” <em>Available at SSRN 1870703</em>.</p>
+</div>
+</div>
+</div>
+
+    </div>
+
+    
+
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="../../tags/numerical-integration/">Numerical Integration</a>
+  
+  <a class="badge badge-light" href="../../tags/sparse-grids/">Sparse Grids</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="../../authors/admin/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="../../">Journeyman Modeler</a></h5>
+      <h6 class="card-subtitle">Data Scientist</h6>
+      <p class="card-text" itemprop="description">I&rsquo;m interested in learning models that lie at the intersection of Economics, Statistics and Computer Science</p>
+      <ul class="network-icon" aria-hidden="true">
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="../../js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="../../js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

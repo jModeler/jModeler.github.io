@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Journeyman Modeler</title>
+    <link>/</link>
+    <description>Recent content on Journeyman Modeler</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 28 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Numerical Integration With Sparse Grids</title>
+      <link>/post/numerical-integration-with-sparse-grids/</link>
+      <pubDate>Sun, 28 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/numerical-integration-with-sparse-grids/</guid>
+      <description>
+
+
+&lt;p&gt;I recently read a paper &lt;span class=&#34;citation&#34;&gt;(Heiss and Winschel &lt;a href=&#34;#ref-heiss2008likelihood&#34;&gt;2008&lt;/a&gt;)&lt;/span&gt; that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error &lt;span class=&#34;citation&#34;&gt;(Skrainka and Judd &lt;a href=&#34;#ref-skrainka2011high&#34;&gt;2011&lt;/a&gt;)&lt;/span&gt;. This post attempts to demonstrate the claim in &lt;span class=&#34;citation&#34;&gt;Skrainka and Judd (&lt;a href=&#34;#ref-skrainka2011high&#34;&gt;2011&lt;/a&gt;)&lt;/span&gt; using two very simple integrals, to which we already know the value. I attempt to compare the outcomes from using MC and SG.&lt;/p&gt;
+&lt;p&gt;The integrals I’ll be evaluating are:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dX 
+\]&lt;/span&gt;
+and
+&lt;span class=&#34;math display&#34;&gt;\[
+\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dX 
+\]&lt;/span&gt;
+where &lt;span class=&#34;math inline&#34;&gt;\(X = \{x_i\}_{i=1}^{5}\)&lt;/span&gt; is a five dimensional random variable, which is distributed according to the multivariate standard normal:
+&lt;span class=&#34;math display&#34;&gt;\[
+X \sim N\left( \left[ \begin{array}
+{r}
+0  \\
+0  \\
+0  \\
+0  \\
+0  \\
+\end{array}\right], \left[ \begin{array}
+{rrrrr}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0   \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0  \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0  \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0  \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1  \\
+\end{array}\right] \right)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Given the distribution of &lt;span class=&#34;math inline&#34;&gt;\(X\)&lt;/span&gt;, the values of the integrals above are easily obtained from standard results (they are &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(1\)&lt;/span&gt;) respectively.&lt;/p&gt;
+&lt;p&gt;I write some utility functions in R to compute the integrands above:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#function to compute the sum of components of the random vector
+s &amp;lt;- function(x)
+{
+  return(sum(x))
+}
+
+#function to compute the square product of the components of the random vector
+p &amp;lt;- function(x)
+{
+  return(prod(x^2))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I now write a function that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simulates a certain number of draws from the distribution of the random variable &lt;span class=&#34;math inline&#34;&gt;\(X\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;Computes the integrand function using each of these draws as input&lt;/li&gt;
+&lt;li&gt;Takes the average of the values computed in the previous step&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This function, in effect, would give us the approximate value of the integral via MC methodology.&lt;/p&gt;
+&lt;p&gt;The code is provided below, note that I use the &lt;tt&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/mvtnorm/index.html&#34;&gt;mvtnorm&lt;/a&gt;&lt;/tt&gt; package to create random draws.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(mvtnorm)
+
+#Function to calculate the MC approximation for the integral
+mc_int &amp;lt;- function(s, n, mu, sigma)
+{
+  #generate random draws
+  x &amp;lt;- rmvnorm(n, mean = mu, sigma = sigma)
+  #now get the integral
+  mc_int_n &amp;lt;- mean(apply(x, 1, s))
+  return(mc_int_n)
+}
+
+set.seed(100)
+n &amp;lt;- 1000
+mc_val &amp;lt;- mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+mc_val&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.007150433&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The result, 0.00715 is not far off from the true value of &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; at first glance, however, we need to compare this to the result from the SG approach.&lt;/p&gt;
+&lt;p&gt;R has a package that generates sparse grids for numerical integration as described in &lt;span class=&#34;citation&#34;&gt;Heiss and Winschel (&lt;a href=&#34;#ref-heiss2008likelihood&#34;&gt;2008&lt;/a&gt;)&lt;/span&gt;, called &lt;tt&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/SparseGrid/index.html&#34;&gt;SparseGrid&lt;/a&gt;&lt;/tt&gt;. We now use the nodes and weights generated from this package to approximate the first integral.
+I re-use some of the code provided in the documentation for the &lt;tt&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf&#34;&gt;SparseGrid&lt;/a&gt;&lt;/tt&gt; package in R.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(SparseGrid)
+
+#generate sparse grids for a 5 dimensional RV with accuracy level 2
+sg &amp;lt;- createSparseGrid(type=&amp;#39;KPN&amp;#39;, dimension=5, k=2)
+
+
+sg_int &amp;lt;- function(func, sg, ...)
+{
+  gx &amp;lt;- apply(sg$nodes, 1, function(x) {func(x, ...)})
+  return(sum(gx * sg$weights))
+}
+
+sg_val &amp;lt;- sg_int(s, sg)
+sg_val&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The result here is exactly 0. In light of this finding, the value obtained from the MC approach, in comparison, is a little off, and tends to show a high variance in output:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(100)
+
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.007150433&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.03162326&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -0.1287932&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.01040134&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -0.03798655&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the third case, there is a &lt;span class=&#34;math inline&#34;&gt;\(-12\%\)&lt;/span&gt; error(!) in the value of the computed integral when compared to the result from the SG approach. The SG approach, in addition, shows no such variation in repeated runs, since the grid values and weights are fixed for a given accuracy level and dimension (of the variable being integrated).&lt;/p&gt;
+&lt;p&gt;I repeat the calculations for the second integral, as shown below&lt;/p&gt;
+&lt;p&gt;MC approach:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(100)
+n &amp;lt;- 1000
+mc_val &amp;lt;- mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+mc_val&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1.001089&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;SG approach:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#generate sparse grids for a 5 dimensional RV with accuracy level 6
+sg &amp;lt;- createSparseGrid(type=&amp;#39;KPN&amp;#39;, dimension=5, k=6)
+sg_val &amp;lt;- sg_int(p, sg)
+sg_val&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once again, the SG approach gives us an exact value (note that the value of &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;, the accuracy level, has gone up, since the integrand is a higher order function). Again, the difference of the results between the two approaches doesn’t seem that large. However, variability of the results from the MC approach is still a concern, as shown below:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(100)
+
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1.001089&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.4672555&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1.14692&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1.062975&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.9112416&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the second case, there is a roughly &lt;span class=&#34;math inline&#34;&gt;\(53\%\)&lt;/span&gt; (!!) error when compared to the true value of the integral. This variability could be worse with more complicated integrands.&lt;/p&gt;
+&lt;p&gt;One suggestion to reduce variability in MC methods is to increase the number of draws, but that would entail a lot of calculations and result in longer runtimes.&lt;/p&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-mvt&#34;&gt;
+&lt;p&gt;Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2019. &lt;em&gt;mvtnorm: Multivariate Normal and T Distributions&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=mvtnorm&#34;&gt;https://CRAN.R-project.org/package=mvtnorm&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-heiss2008likelihood&#34;&gt;
+&lt;p&gt;Heiss, Florian, and Viktor Winschel. 2008. “Likelihood Approximation by Numerical Integration on Sparse Grids.” &lt;em&gt;Journal of Econometrics&lt;/em&gt; 144 (1): 62–80.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-skrainka2011high&#34;&gt;
+&lt;p&gt;Skrainka, Benjamin S, and Kenneth L Judd. 2011. “High Performance Quadrature Rules: How Numerical Integration Affects a Popular Model of Product Differentiation.” &lt;em&gt;Available at SSRN 1870703&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

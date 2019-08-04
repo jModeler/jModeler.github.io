@@ -462,14 +462,14 @@
 
 <p>I recently read a paper <span class="citation">(Heiss and Winschel <a href="#ref-heiss2008likelihood">2008</a>)</span> that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error <span class="citation">(Skrainka and Judd <a href="#ref-skrainka2011high">2011</a>)</span>. This post attempts to demonstrate the claim in <span class="citation">Skrainka and Judd (<a href="#ref-skrainka2011high">2011</a>)</span> using two very simple integrals, to which we already know the value. I attempt to compare the outcomes from using MC and SG.</p>
 <p>The integrals I’ll be evaluating are:</p>
-<p><span class="math display">\[
-\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dX 
-\]</span>
-and
-<span class="math display">\[
-\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dX 
-\]</span>
-where <span class="math inline">\(X = \{x_i\}_{i=1}^{5}\)</span> is a five dimensional random variable, which is distributed according to the multivariate standard normal:
+<p><span class="math display" id="eq:sumint">\[\begin{equation}
+\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dX   \tag{1} 
+\end{equation}\]</span></p>
+<p>and
+<span class="math display" id="eq:prodint">\[\begin{equation}
+\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dX \tag{2}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(X = \{x_i\}_{i=1}^{5}\)</span> is a five dimensional random variable, which is distributed according to the multivariate standard normal:
 <span class="math display">\[
 X \sim N\left( \left[ \begin{array}
 {r}
@@ -487,7 +487,7 @@ X \sim N\left( \left[ \begin{array}
 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1  \\
 \end{array}\right] \right)
 \]</span></p>
-<p>Given the distribution of <span class="math inline">\(X\)</span>, the values of the integrals above are easily obtained from standard results (they are <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>) respectively.</p>
+<p>Given the distribution of <span class="math inline">\(X\)</span>, the values of the integrals above are easily obtained from standard results (the value of <a href="#eq:sumint">(1)</a> is <span class="math inline">\(0\)</span> and that of <a href="#eq:prodint">(2)</a> is <span class="math inline">\(1\)</span>) respectively.</p>
 <p>I write some utility functions in R to compute the integrands above:</p>
 <pre class="r"><code>#function to compute the sum of components of the random vector
 s &lt;- function(x)
@@ -557,8 +557,8 @@ mc_int(s, n, mu = rep(0,5), sigma = diag(5))</code></pre>
 <pre class="r"><code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))</code></pre>
 <pre><code>## [1] -0.03798655</code></pre>
 <p>In the third case, there is a <span class="math inline">\(-12\%\)</span> error(!) in the value of the computed integral when compared to the result from the SG approach. The SG approach, in addition, shows no such variation in repeated runs, since the grid values and weights are fixed for a given accuracy level and dimension (of the variable being integrated).</p>
-<p>I repeat the calculations for the second integral, as shown below</p>
-<p>MC approach:</p>
+<p>I repeat the calculations for the second integral, as shown below
+MC approach:</p>
 <pre class="r"><code>set.seed(100)
 n &lt;- 1000
 mc_val &lt;- mc_int(p, n, mu = rep(0,5), sigma = diag(5))

@@ -6,10 +6,91 @@
     <description>Recent content on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Additive Property of the Gamma Distribution</title>
+      <link>/post/additive-property-of-the-gamma-distribution/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/additive-property-of-the-gamma-distribution/</guid>
+      <description>
+
+
+&lt;p&gt;While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field &lt;span class=&#34;citation&#34;&gt;(Ferguson &lt;a href=&#34;#ref-ferguson1973bayesian&#34;&gt;1973&lt;/a&gt;, &lt;span class=&#34;citation&#34;&gt;Antoniak (&lt;a href=&#34;#ref-antoniak1974mixtures&#34;&gt;1974&lt;/a&gt;)&lt;/span&gt;)&lt;/span&gt;) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.&lt;/p&gt;
+&lt;p&gt;As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained &lt;a href=&#34;https://en.wikipedia.org/wiki/Gamma_distribution&#34;&gt;here&lt;/a&gt;). Without loss of generality in this case, we also set the rate parameter $ = 1$ for all random variables unless otherwise mentioned. We want to prove the additive property of the gamma distribution:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:GammaSum&#34;&gt;\[\begin{align}
+\sum_{i=1}^{N} X_i \sim Gamma(\sum_{i=1}^{N}\alpha_i, 1)                    \nonumber \\
+ Where \, X_i \sim Gamma(\alpha_i, 1), \, \, i \in \{1,2, \dots, N\}  \tag{1} 
+\end{align}\]&lt;/span&gt;
+Where
+&lt;span class=&#34;math display&#34; id=&#34;eq:GammaFun&#34;&gt;\[\begin{align}
+Gamma(\alpha_i, 1) = f_{X_i}(x; \alpha_i) = \frac{1}{\Gamma(\alpha_i)}  x^{(\alpha_i -1)} e^{-x}                 \tag{2} 
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;Importantly, the &lt;span class=&#34;math inline&#34;&gt;\(X_i\)&lt;/span&gt;’s are independent. We prove the identity by induction. For &lt;span class=&#34;math inline&#34;&gt;\(N = 1\)&lt;/span&gt;, the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; holds trivially. For &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;, we set about deriving this from first principles. Let &lt;span class=&#34;math inline&#34;&gt;\(Y = X_1 + X_2\)&lt;/span&gt;. We try to get the distribution of &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt;. The following holds for &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt;:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:YdisInit&#34;&gt;\[\begin{align}
+P(Y \le y)  &amp;amp; =  P(X_1 + X_2 \le y)   \nonumber \\
+\implies P(Y \le y)  &amp;amp; = P(X_1 \le y - X_2)   \nonumber \\
+\implies P(Y \le y) &amp;amp;  = P(X_1 \le y - X_2 | X_2)P(X_2)   \tag{3} 
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;The expression in &lt;a href=&#34;#eq:YdisInit&#34;&gt;(3)&lt;/a&gt; is a double integral, one to vary &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; over the range of values it can possibly take: &lt;span class=&#34;math inline&#34;&gt;\((0, \infty)\)&lt;/span&gt;, and the other to vary &lt;span class=&#34;math inline&#34;&gt;\(X_1\)&lt;/span&gt; from &lt;span class=&#34;math inline&#34;&gt;\((0, y-X_2)\)&lt;/span&gt;. This integral takes the form below:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:YInt&#34;&gt;\[\begin{align}
+P(Y \le y) &amp;amp;  = P(X_1 \le y - X_2 | X_2)P(X_2) = \int_{0}^{\infty} \left( \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{4} 
+\end{align}\]&lt;/span&gt;
+Note also, that the density of &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; is given by:
+&lt;span class=&#34;math display&#34; id=&#34;eq:Ydens&#34;&gt;\[\begin{align}
+f_{Y}(y) &amp;amp;  = \frac{dP(Y \le y)}{dy}   \tag{5} 
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;Applying the identity in &lt;a href=&#34;#eq:Ydens&#34;&gt;(5)&lt;/a&gt; to the integral in &lt;a href=&#34;#eq:YInt&#34;&gt;(4)&lt;/a&gt; and using the &lt;a href=&#34;https://en.wikipedia.org/wiki/Leibniz_integral_rule&#34;&gt;Leibniz integral rule&lt;/a&gt;, we get the following:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:YdensForm&#34;&gt;\[\begin{align}
+f_{Y}(y) &amp;amp;  = \frac{d}{dy} \int_{0}^{\infty} \left( \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \nonumber \\
+\implies f_{Y}(y) &amp;amp;  = \int_{0}^{\infty} \left( \frac{1}{\Gamma(\alpha_1)}  (y-x_2)^{(\alpha_1 -1)} e^{-(y-x_2)} \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \nonumber \\
+\implies f_{Y}(y) &amp;amp;  = \int_{0}^{\infty} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} (y-x_2)^{(\alpha_1 -1)} x_{2}^{(\alpha_2 -1)} e^{-y} dX_2 \tag{6} 
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;We now attempt to convert the integral in &lt;a href=&#34;#eq:YdensForm&#34;&gt;(6)&lt;/a&gt; into a form that is well known. We set &lt;span class=&#34;math inline&#34;&gt;\(Z = \frac{X_2}{y}\)&lt;/span&gt;, which gives us &lt;span class=&#34;math inline&#34;&gt;\(dX_2 = ydZ\)&lt;/span&gt;, and also note that &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; can take the range of values bounded by the interval &lt;span class=&#34;math inline&#34;&gt;\((0,1)\)&lt;/span&gt; (&lt;span class=&#34;math inline&#34;&gt;\(Z \rightarrow 0\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(X_2 \rightarrow 0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(Z \rightarrow 1\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(X_2 \rightarrow \infty\)&lt;/span&gt;, since &lt;span class=&#34;math inline&#34;&gt;\(Y \rightarrow \infty\)&lt;/span&gt; too). Replacing &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; with &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; in &lt;a href=&#34;#eq:YdensForm&#34;&gt;(6)&lt;/a&gt;, we get:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:YdensTrans&#34;&gt;\[\begin{align}
+f_{Y}(y) &amp;amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} (y- yz)^{(\alpha_1 -1)} (yz)^{(\alpha_2 -1)} e^{-y} ydZ \nonumber \\
+\implies f_{Y}(y) &amp;amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 -1)} (1- z)^{(\alpha_1 -1)} y^{(\alpha_2 -1)} z^{(\alpha_2 -1)} e^{-y} ydZ \nonumber \\
+\implies f_{Y}(y) &amp;amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ \nonumber \\
+\implies f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y} \int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ \tag{7} 
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;The integral in &lt;a href=&#34;#eq:YdensTrans&#34;&gt;(7)&lt;/a&gt; is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Beta_function&#34;&gt;Beta function&lt;/a&gt;, whose value is given below:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:BetaForm&#34;&gt;\[\begin{align}
+\int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ = \frac{\Gamma(\alpha_1)\Gamma(\alpha_2)}{\Gamma(\alpha_1 + \alpha_2)} \tag{8}
+\end{align}\]&lt;/span&gt;
+Substituting &lt;a href=&#34;#eq:BetaForm&#34;&gt;(8)&lt;/a&gt; back into &lt;a href=&#34;#eq:YdensTrans&#34;&gt;(7)&lt;/a&gt;, we get:
+&lt;span class=&#34;math display&#34; id=&#34;eq:YdensFinal&#34;&gt;\[\begin{align}
+f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y}  \frac{\Gamma(\alpha_1)\Gamma(\alpha_2)}{\Gamma(\alpha_1 + \alpha_2)}\nonumber \\
+\implies f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1 + \alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y}  \tag{9} \\
+\implies f_{Y}(y) &amp;amp; = Gamma(\alpha_1 + \alpha_2, 1) \nonumber
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;From &lt;a href=&#34;#eq:YdensFinal&#34;&gt;(9)&lt;/a&gt;, we have now proved that the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; holds for &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;. We now assume this is true for &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; and show that this property holds for &lt;span class=&#34;math inline&#34;&gt;\(N+1\)&lt;/span&gt;. Now, let &lt;span class=&#34;math inline&#34;&gt;\(Y = \sum_{i=1}^{N} X_i\)&lt;/span&gt;, which gives us the following identities:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:YNdist&#34; id=&#34;eq:XnplSum&#34;&gt;\[\begin{align}
+\sum_{i=1}^{N+1} X_i &amp;amp;  = Y + X_{N+1} \tag{10} \\
+Y &amp;amp; \sim Gamma(\sum_{i=1}^{N} \alpha_i,1) \tag{11}
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;&lt;a href=&#34;#eq:YNdist&#34;&gt;(11)&lt;/a&gt; follows from the induction assumption. Since the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; is true for &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;, we combine this with the identities in &lt;a href=&#34;#eq:XnplSum&#34;&gt;(10)&lt;/a&gt; &amp;amp; &lt;a href=&#34;#eq:YNdist&#34;&gt;(11)&lt;/a&gt; to get:&lt;/p&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:YNpldist&#34;&gt;\[\begin{align}
+\sum_{i=1}^{N+1} X_i &amp;amp;  = Y + X_{N+1} \sim Gamma(\sum_{i=1}^{N} \alpha_i + \alpha_{N+1},1) \nonumber \\
+\implies \sum_{i=1}^{N+1} X_i &amp;amp; \sim Gamma(\sum_{i=1}^{N+1} \alpha_i,1) \tag{12} 
+\end{align}\]&lt;/span&gt;
+&lt;p&gt;&lt;a href=&#34;#eq:YNpldist&#34;&gt;(12)&lt;/a&gt; shows that the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; is true for &lt;span class=&#34;math inline&#34;&gt;\(N+1\)&lt;/span&gt;, completing the proof.&lt;/p&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-antoniak1974mixtures&#34;&gt;
+&lt;p&gt;Antoniak, Charles E. 1974. “Mixtures of Dirichlet Processes with Applications to Bayesian Nonparametric Problems.” &lt;em&gt;The Annals of Statistics&lt;/em&gt;. JSTOR, 1152–74.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-ferguson1973bayesian&#34;&gt;
+&lt;p&gt;Ferguson, Thomas S. 1973. “A Bayesian Analysis of Some Nonparametric Problems.” &lt;em&gt;The Annals of Statistics&lt;/em&gt;. JSTOR, 209–30.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Numerical Integration With Sparse Grids</title>
@@ -22,15 +103,14 @@
 
 &lt;p&gt;I recently read a paper &lt;span class=&#34;citation&#34;&gt;(Heiss and Winschel &lt;a href=&#34;#ref-heiss2008likelihood&#34;&gt;2008&lt;/a&gt;)&lt;/span&gt; that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error &lt;span class=&#34;citation&#34;&gt;(Skrainka and Judd &lt;a href=&#34;#ref-skrainka2011high&#34;&gt;2011&lt;/a&gt;)&lt;/span&gt;. This post attempts to demonstrate the claim in &lt;span class=&#34;citation&#34;&gt;Skrainka and Judd (&lt;a href=&#34;#ref-skrainka2011high&#34;&gt;2011&lt;/a&gt;)&lt;/span&gt; using two very simple integrals, to which we already know the value. I attempt to compare the outcomes from using MC and SG.&lt;/p&gt;
 &lt;p&gt;The integrals I’ll be evaluating are:&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:sumint&#34;&gt;\[\begin{equation}
+&lt;span class=&#34;math display&#34; id=&#34;eq:sumint&#34;&gt;\[\begin{equation}
 \int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dX   \tag{1} 
-\end{equation}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;and
+\end{equation}\]&lt;/span&gt;
+and
 &lt;span class=&#34;math display&#34; id=&#34;eq:prodint&#34;&gt;\[\begin{equation}
 \int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dX \tag{2}
-\end{equation}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(X = \{x_i\}_{i=1}^{5}\)&lt;/span&gt; is a five dimensional random variable, which is distributed according to the multivariate standard normal:
-&lt;span class=&#34;math display&#34;&gt;\[
+\end{equation}\]&lt;/span&gt;
+&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(X = \{x_i\}_{i=1}^{5}\)&lt;/span&gt; is a five dimensional random variable, which is distributed according to the multivariate standard normal: &lt;span class=&#34;math display&#34;&gt;\[
 X \sim N\left( \left[ \begin{array}
 {r}
 0  \\
@@ -86,8 +166,7 @@ mc_val &amp;lt;- mc_int(s, n, mu = rep(0,5), sigma = diag(5))
 mc_val&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] 0.007150433&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The result, 0.00715 is not far off from the true value of &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; at first glance, however, we need to compare this to the result from the SG approach.&lt;/p&gt;
-&lt;p&gt;R has a package that generates sparse grids for numerical integration as described in &lt;span class=&#34;citation&#34;&gt;Heiss and Winschel (&lt;a href=&#34;#ref-heiss2008likelihood&#34;&gt;2008&lt;/a&gt;)&lt;/span&gt;, called &lt;tt&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/SparseGrid/index.html&#34;&gt;SparseGrid&lt;/a&gt;&lt;/tt&gt;. We now use the nodes and weights generated from this package to approximate the first integral.
-I re-use some of the code provided in the documentation for the &lt;tt&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf&#34;&gt;SparseGrid&lt;/a&gt;&lt;/tt&gt; package in R.&lt;/p&gt;
+&lt;p&gt;R has a package that generates sparse grids for numerical integration as described in &lt;span class=&#34;citation&#34;&gt;Heiss and Winschel (&lt;a href=&#34;#ref-heiss2008likelihood&#34;&gt;2008&lt;/a&gt;)&lt;/span&gt;, called &lt;tt&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/SparseGrid/index.html&#34;&gt;SparseGrid&lt;/a&gt;&lt;/tt&gt;. We now use the nodes and weights generated from this package to approximate the first integral. I re-use some of the code provided in the documentation for the &lt;tt&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf&#34;&gt;SparseGrid&lt;/a&gt;&lt;/tt&gt; package in R.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(SparseGrid)
 
 #generate sparse grids for a 5 dimensional RV with accuracy level 2
@@ -117,8 +196,8 @@ mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] -0.03798655&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;In the third case, there is a &lt;span class=&#34;math inline&#34;&gt;\(-12\%\)&lt;/span&gt; error(!) in the value of the computed integral when compared to the result from the SG approach. The SG approach, in addition, shows no such variation in repeated runs, since the grid values and weights are fixed for a given accuracy level and dimension (of the variable being integrated).&lt;/p&gt;
-&lt;p&gt;I repeat the calculations for the second integral, as shown below
-MC approach:&lt;/p&gt;
+&lt;p&gt;I repeat the calculations for the second integral, as shown below&lt;/p&gt;
+&lt;p&gt;MC approach:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(100)
 n &amp;lt;- 1000
 mc_val &amp;lt;- mc_int(p, n, mu = rep(0,5), sigma = diag(5))
@@ -149,10 +228,10 @@ mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
 &lt;div id=&#34;ref-mvt&#34;&gt;
-&lt;p&gt;Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2019. &lt;em&gt;mvtnorm: Multivariate Normal and T Distributions&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=mvtnorm&#34;&gt;https://CRAN.R-project.org/package=mvtnorm&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2019. &lt;em&gt;mvtnorm: Multivariate Normal and T Distributions&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=mvtnorm&#34; class=&#34;uri&#34;&gt;https://CRAN.R-project.org/package=mvtnorm&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-heiss2008likelihood&#34;&gt;
-&lt;p&gt;Heiss, Florian, and Viktor Winschel. 2008. “Likelihood Approximation by Numerical Integration on Sparse Grids.” &lt;em&gt;Journal of Econometrics&lt;/em&gt; 144 (1): 62–80.&lt;/p&gt;
+&lt;p&gt;Heiss, Florian, and Viktor Winschel. 2008. “Likelihood Approximation by Numerical Integration on Sparse Grids.” &lt;em&gt;Journal of Econometrics&lt;/em&gt; 144 (1). Elsevier: 62–80.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-skrainka2011high&#34;&gt;
 &lt;p&gt;Skrainka, Benjamin S, and Kenneth L Judd. 2011. “High Performance Quadrature Rules: How Numerical Integration Affects a Popular Model of Product Differentiation.” &lt;em&gt;Available at SSRN 1870703&lt;/em&gt;.&lt;/p&gt;

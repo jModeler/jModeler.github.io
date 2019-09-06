@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bayesian Nonparametric on Journeyman Modeler</title>
+    <link>/categories/bayesian-nonparametric/</link>
+    <description>Recent content in Bayesian Nonparametric on Journeyman Modeler</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/categories/bayesian-nonparametric/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Additive Property of the Gamma Distribution</title>
+      <link>/post/additive-property-of-the-gamma-distribution/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/additive-property-of-the-gamma-distribution/</guid>
+      <description>
+
+
+&lt;p&gt;While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field &lt;span class=&#34;citation&#34;&gt;(Ferguson &lt;a href=&#34;#ref-ferguson1973bayesian&#34;&gt;1973&lt;/a&gt;, &lt;span class=&#34;citation&#34;&gt;Antoniak (&lt;a href=&#34;#ref-antoniak1974mixtures&#34;&gt;1974&lt;/a&gt;)&lt;/span&gt;)&lt;/span&gt;) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.&lt;/p&gt;
+&lt;p&gt;As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained &lt;a href=&#34;https://en.wikipedia.org/wiki/Gamma_distribution&#34;&gt;here&lt;/a&gt;). Without loss of generality in this case, we also set the rate parameter $ = 1$ for all random variables unless otherwise mentioned.&lt;/p&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-antoniak1974mixtures&#34;&gt;
+&lt;p&gt;Antoniak, Charles E. 1974. “Mixtures of Dirichlet Processes with Applications to Bayesian Nonparametric Problems.” &lt;em&gt;The Annals of Statistics&lt;/em&gt;. JSTOR, 1152–74.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-ferguson1973bayesian&#34;&gt;
+&lt;p&gt;Ferguson, Thomas S. 1973. “A Bayesian Analysis of Some Nonparametric Problems.” &lt;em&gt;The Annals of Statistics&lt;/em&gt;. JSTOR, 209–30.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

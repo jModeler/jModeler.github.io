@@ -6,10 +6,28 @@
     <description>Recent content in Tags on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bayesian Nonparametrics</title>
+      <link>/tags/bayesian-nonparametrics/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/bayesian-nonparametrics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gamma Distribution</title>
+      <link>/tags/gamma-distribution/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gamma-distribution/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Numerical Integration</title>

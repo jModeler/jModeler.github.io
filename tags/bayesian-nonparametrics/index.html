@@ -118,7 +118,7 @@
   <meta property="og:description" content="Data Scientist"><meta property="og:image" content="/img/icon-192.png">
   <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2019-09-03T00:00:00&#43;00:00">
+  <meta property="og:updated_time" content="2019-09-07T00:00:00&#43;00:00">
   
 
   
@@ -311,10 +311,20 @@
   
   
   <div>
+    <h2><a href="../../post/deriving-the-beta-distribution-from-gamma-distributed-variables/">Deriving the Beta Distribution from Gamma Distributed Variables</a></h2>
+    <div class="article-style">
+      
+      This post is a continuation of the post that proves the additive property of the Gamma distribution. We use the same parameterization of the Gamma Distribution as before, and set the rate parameter \(=1\) unless otherwise specified. In this post I prove that the following property holds:
+\[\begin{align}\frac{X_i}{\sum_{i=1}^{N} X_i} \sim Beta(\alpha_i, \sum_{j \ne i} \alpha_j) \tag{1} \\Where \, X_i \sim Gamma(\alpha_i, 1), \, \, \{i,j\} \in \{1,2, \dots, N\} \end{align}\]
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="../../post/additive-property-of-the-gamma-distribution/">Additive Property of the Gamma Distribution</a></h2>
     <div class="article-style">
       
-      While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, Antoniak (1974))) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
+      While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, @antoniak1974mixtures)) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
 As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained here).
       
     </div>

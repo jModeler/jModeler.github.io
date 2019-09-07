@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, Antoniak (1974))) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
+  <meta name="description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, @antoniak1974mixtures)) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
 As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained here).">
 
   
@@ -112,7 +112,7 @@ As the title suggests, we start with the Gamma distribution. We use the shape an
   <meta property="og:site_name" content="Journeyman Modeler">
   <meta property="og:url" content="/post/additive-property-of-the-gamma-distribution/">
   <meta property="og:title" content="Additive Property of the Gamma Distribution | Journeyman Modeler">
-  <meta property="og:description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, Antoniak (1974))) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
+  <meta property="og:description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, @antoniak1974mixtures)) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
 As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained here)."><meta property="og:image" content="/img/icon-192.png">
   <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
@@ -462,72 +462,72 @@ As the title suggests, we start with the Gamma distribution. We use the shape an
       
 
 
-<p>While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field <span class="citation">(Ferguson <a href="#ref-ferguson1973bayesian">1973</a>, <span class="citation">Antoniak (<a href="#ref-antoniak1974mixtures">1974</a>)</span>)</span>) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.</p>
+<p>While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field <span class="citation">(Ferguson <a href="#ref-ferguson1973bayesian">1973</a>, @antoniak1974mixtures)</span>) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.</p>
 <p>As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained <a href="https://en.wikipedia.org/wiki/Gamma_distribution">here</a>). Without loss of generality in this case, we also set the rate parameter $ = 1$ for all random variables unless otherwise mentioned. We want to prove the additive property of the gamma distribution:</p>
-<span class="math display" id="eq:GammaSum">\[\begin{align}
+<p><span class="math display" id="eq:GammaSum">\[\begin{align}
 \sum_{i=1}^{N} X_i \sim Gamma(\sum_{i=1}^{N}\alpha_i, 1)                    \nonumber \\
  Where \, X_i \sim Gamma(\alpha_i, 1), \, \, i \in \{1,2, \dots, N\}  \tag{1} 
-\end{align}\]</span>
-Where
+\end{align}\]</span></p>
+<p>Where
 <span class="math display" id="eq:GammaFun">\[\begin{align}
 Gamma(\alpha_i, 1) = f_{X_i}(x; \alpha_i) = \frac{1}{\Gamma(\alpha_i)}  x^{(\alpha_i -1)} e^{-x}                 \tag{2} 
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>Importantly, the <span class="math inline">\(X_i\)</span>’s are independent. We prove the identity by induction. For <span class="math inline">\(N = 1\)</span>, the property in <a href="#eq:GammaSum">(1)</a> holds trivially. For <span class="math inline">\(N=2\)</span>, we set about deriving this from first principles. Let <span class="math inline">\(Y = X_1 + X_2\)</span>. We try to get the distribution of <span class="math inline">\(Y\)</span>. The following holds for <span class="math inline">\(Y\)</span>:</p>
-<span class="math display" id="eq:YdisInit">\[\begin{align}
+<p><span class="math display" id="eq:YdisInit">\[\begin{align}
 P(Y \le y)  &amp; =  P(X_1 + X_2 \le y)   \nonumber \\
 \implies P(Y \le y)  &amp; = P(X_1 \le y - X_2)   \nonumber \\
 \implies P(Y \le y) &amp;  = P(X_1 \le y - X_2 | X_2)P(X_2)   \tag{3} 
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>The expression in <a href="#eq:YdisInit">(3)</a> is a double integral, one to vary <span class="math inline">\(X_2\)</span> over the range of values it can possibly take: <span class="math inline">\((0, \infty)\)</span>, and the other to vary <span class="math inline">\(X_1\)</span> from <span class="math inline">\((0, y-X_2)\)</span>. This integral takes the form below:</p>
-<span class="math display" id="eq:YInt">\[\begin{align}
+<p><span class="math display" id="eq:YInt">\[\begin{align}
 P(Y \le y) &amp;  = P(X_1 \le y - X_2 | X_2)P(X_2) = \int_{0}^{\infty} \left( \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{4} 
-\end{align}\]</span>
-Note also, that the density of <span class="math inline">\(Y\)</span> is given by:
+\end{align}\]</span></p>
+<p>Note also, that the density of <span class="math inline">\(Y\)</span> is given by:
 <span class="math display" id="eq:Ydens">\[\begin{align}
 f_{Y}(y) &amp;  = \frac{dP(Y \le y)}{dy}   \tag{5} 
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>Applying the identity in <a href="#eq:Ydens">(5)</a> to the integral in <a href="#eq:YInt">(4)</a> and using the <a href="https://en.wikipedia.org/wiki/Leibniz_integral_rule">Leibniz integral rule</a>, we get the following:</p>
-<span class="math display" id="eq:YdensForm">\[\begin{align}
+<p><span class="math display" id="eq:YdensForm">\[\begin{align}
 f_{Y}(y) &amp;  = \frac{d}{dy} \int_{0}^{\infty} \left( \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \nonumber \\
 \implies f_{Y}(y) &amp;  = \int_{0}^{\infty} \left( \frac{1}{\Gamma(\alpha_1)}  (y-x_2)^{(\alpha_1 -1)} e^{-(y-x_2)} \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \nonumber \\
 \implies f_{Y}(y) &amp;  = \int_{0}^{\infty} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} (y-x_2)^{(\alpha_1 -1)} x_{2}^{(\alpha_2 -1)} e^{-y} dX_2 \tag{6} 
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>We now attempt to convert the integral in <a href="#eq:YdensForm">(6)</a> into a form that is well known. We set <span class="math inline">\(Z = \frac{X_2}{y}\)</span>, which gives us <span class="math inline">\(dX_2 = ydZ\)</span>, and also note that <span class="math inline">\(Z\)</span> can take the range of values bounded by the interval <span class="math inline">\((0,1)\)</span> (<span class="math inline">\(Z \rightarrow 0\)</span> as <span class="math inline">\(X_2 \rightarrow 0\)</span> and <span class="math inline">\(Z \rightarrow 1\)</span> as <span class="math inline">\(X_2 \rightarrow \infty\)</span>, since <span class="math inline">\(Y \rightarrow \infty\)</span> too). Replacing <span class="math inline">\(X_2\)</span> with <span class="math inline">\(Z\)</span> in <a href="#eq:YdensForm">(6)</a>, we get:</p>
-<span class="math display" id="eq:YdensTrans">\[\begin{align}
+<p><span class="math display" id="eq:YdensTrans">\[\begin{align}
 f_{Y}(y) &amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} (y- yz)^{(\alpha_1 -1)} (yz)^{(\alpha_2 -1)} e^{-y} ydZ \nonumber \\
 \implies f_{Y}(y) &amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 -1)} (1- z)^{(\alpha_1 -1)} y^{(\alpha_2 -1)} z^{(\alpha_2 -1)} e^{-y} ydZ \nonumber \\
 \implies f_{Y}(y) &amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ \nonumber \\
 \implies f_{Y}(y) &amp;  =  \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y} \int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ \tag{7} 
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>The integral in <a href="#eq:YdensTrans">(7)</a> is the <a href="https://en.wikipedia.org/wiki/Beta_function">Beta function</a>, whose value is given below:</p>
-<span class="math display" id="eq:BetaForm">\[\begin{align}
+<p><span class="math display" id="eq:BetaForm">\[\begin{align}
 \int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ = \frac{\Gamma(\alpha_1)\Gamma(\alpha_2)}{\Gamma(\alpha_1 + \alpha_2)} \tag{8}
-\end{align}\]</span>
-Substituting <a href="#eq:BetaForm">(8)</a> back into <a href="#eq:YdensTrans">(7)</a>, we get:
+\end{align}\]</span></p>
+<p>Substituting <a href="#eq:BetaForm">(8)</a> back into <a href="#eq:YdensTrans">(7)</a>, we get:
 <span class="math display" id="eq:YdensFinal">\[\begin{align}
 f_{Y}(y) &amp;  =  \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y}  \frac{\Gamma(\alpha_1)\Gamma(\alpha_2)}{\Gamma(\alpha_1 + \alpha_2)}\nonumber \\
 \implies f_{Y}(y) &amp;  =  \frac{1}{\Gamma(\alpha_1 + \alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y}  \tag{9} \\
 \implies f_{Y}(y) &amp; = Gamma(\alpha_1 + \alpha_2, 1) \nonumber
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p>From <a href="#eq:YdensFinal">(9)</a>, we have now proved that the property in <a href="#eq:GammaSum">(1)</a> holds for <span class="math inline">\(N=2\)</span>. We now assume this is true for <span class="math inline">\(N\)</span> and show that this property holds for <span class="math inline">\(N+1\)</span>. Now, let <span class="math inline">\(Y = \sum_{i=1}^{N} X_i\)</span>, which gives us the following identities:</p>
-<span class="math display" id="eq:YNdist" id="eq:XnplSum">\[\begin{align}
+<p><span class="math display" id="eq:YNdist" id="eq:XnplSum">\[\begin{align}
 \sum_{i=1}^{N+1} X_i &amp;  = Y + X_{N+1} \tag{10} \\
 Y &amp; \sim Gamma(\sum_{i=1}^{N} \alpha_i,1) \tag{11}
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p><a href="#eq:YNdist">(11)</a> follows from the induction assumption. Since the property in <a href="#eq:GammaSum">(1)</a> is true for <span class="math inline">\(N=2\)</span>, we combine this with the identities in <a href="#eq:XnplSum">(10)</a> &amp; <a href="#eq:YNdist">(11)</a> to get:</p>
-<span class="math display" id="eq:YNpldist">\[\begin{align}
+<p><span class="math display" id="eq:YNpldist">\[\begin{align}
 \sum_{i=1}^{N+1} X_i &amp;  = Y + X_{N+1} \sim Gamma(\sum_{i=1}^{N} \alpha_i + \alpha_{N+1},1) \nonumber \\
 \implies \sum_{i=1}^{N+1} X_i &amp; \sim Gamma(\sum_{i=1}^{N+1} \alpha_i,1) \tag{12} 
-\end{align}\]</span>
+\end{align}\]</span></p>
 <p><a href="#eq:YNpldist">(12)</a> shows that the property in <a href="#eq:GammaSum">(1)</a> is true for <span class="math inline">\(N+1\)</span>, completing the proof.</p>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
 <div id="refs" class="references">
 <div id="ref-antoniak1974mixtures">
-<p>Antoniak, Charles E. 1974. “Mixtures of Dirichlet Processes with Applications to Bayesian Nonparametric Problems.” <em>The Annals of Statistics</em>. JSTOR, 1152–74.</p>
+<p>Antoniak, Charles E. 1974. “Mixtures of Dirichlet Processes with Applications to Bayesian Nonparametric Problems.” <em>The Annals of Statistics</em>, 1152–74.</p>
 </div>
 <div id="ref-ferguson1973bayesian">
-<p>Ferguson, Thomas S. 1973. “A Bayesian Analysis of Some Nonparametric Problems.” <em>The Annals of Statistics</em>. JSTOR, 209–30.</p>
+<p>Ferguson, Thomas S. 1973. “A Bayesian Analysis of Some Nonparametric Problems.” <em>The Annals of Statistics</em>, 209–30.</p>
 </div>
 </div>
 </div>

@@ -114,51 +114,58 @@ Gamma(\alpha_i, 1) = f_{X_i}(x; \alpha_i) = \frac{1}{\Gamma(\alpha_i)}  x^{(\alp
 &lt;p&gt;Importantly, the &lt;span class=&#34;math inline&#34;&gt;\(X_i\)&lt;/span&gt;’s are independent. We prove the identity by induction. For &lt;span class=&#34;math inline&#34;&gt;\(N = 1\)&lt;/span&gt;, the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; holds trivially. For &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;, we set about deriving this from first principles. Let &lt;span class=&#34;math inline&#34;&gt;\(Y = X_1 + X_2\)&lt;/span&gt;. We try to get the distribution of &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt;. The following holds for &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:YdisInit&#34;&gt;\[\begin{align}
 P(Y \le y)  &amp;amp; =  P(X_1 + X_2 \le y)   \nonumber \\
-\implies P(Y \le y)  &amp;amp; = P(X_1 \le y - X_2)   \nonumber \\
-\implies P(Y \le y) &amp;amp;  = P(X_1 \le y - X_2 | X_2)P(X_2)   \tag{3} 
+\implies P(Y \le y)  &amp;amp; = P(X_1 \le y - X_2)    \tag{3} 
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;The expression in &lt;a href=&#34;#eq:YdisInit&#34;&gt;(3)&lt;/a&gt; is a double integral, one to vary &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; over the range of values it can possibly take: &lt;span class=&#34;math inline&#34;&gt;\((0, \infty)\)&lt;/span&gt;, and the other to vary &lt;span class=&#34;math inline&#34;&gt;\(X_1\)&lt;/span&gt; from &lt;span class=&#34;math inline&#34;&gt;\((0, y-X_2)\)&lt;/span&gt;. This integral takes the form below:&lt;/p&gt;
+&lt;p&gt;If we knew the value of &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt;, the expression in &lt;a href=&#34;#eq:YdisInit&#34;&gt;(3)&lt;/a&gt; is obtained by integrating the probability density of &lt;span class=&#34;math inline&#34;&gt;\(X_1\)&lt;/span&gt; over &lt;span class=&#34;math inline&#34;&gt;\((0, y-X_2)\)&lt;/span&gt;, given below:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:x1dis&#34;&gt;\[\begin{align}
+P(X_1 \le y-X_2|X_2 = x_2)  &amp;amp; =  \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 = F(y, X_2; \alpha_1)   \tag{4} 
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;However, since &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; is a random variable varying from &lt;span class=&#34;math inline&#34;&gt;\((0, \infty)\)&lt;/span&gt;, the value of the expression in &lt;a href=&#34;#eq:YdisInit&#34;&gt;(3)&lt;/a&gt; is the expectation of &lt;span class=&#34;math inline&#34;&gt;\(F(y, X_2; \alpha_1)\)&lt;/span&gt; with respect to &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt;, given below:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:ExpF&#34;&gt;\[\begin{align}
+P(Y \le y) &amp;amp; = \int_{0}^{\infty} \left[ F(y, X_2;\alpha_1) \right]  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{5} 
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The expression in &lt;a href=&#34;#eq:ExpF&#34;&gt;(5)&lt;/a&gt; is a double integral, one to vary &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; over the range of values it can possibly take: &lt;span class=&#34;math inline&#34;&gt;\((0, \infty)\)&lt;/span&gt;, and the other to vary &lt;span class=&#34;math inline&#34;&gt;\(X_1\)&lt;/span&gt; from &lt;span class=&#34;math inline&#34;&gt;\((0, y-X_2)\)&lt;/span&gt;. Putting &lt;a href=&#34;#eq:x1dis&#34;&gt;(4)&lt;/a&gt; in &lt;a href=&#34;#eq:ExpF&#34;&gt;(5)&lt;/a&gt;, we get:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:YInt&#34;&gt;\[\begin{align}
-P(Y \le y) &amp;amp;  = P(X_1 \le y - X_2 | X_2)P(X_2) = \int_{0}^{\infty} \left( \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{4} 
+P(Y \le y) &amp;amp;  = \int_{0}^{\infty} \left[ \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right]  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{6} 
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Note also, that the density of &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; is given by:
 &lt;span class=&#34;math display&#34; id=&#34;eq:Ydens&#34;&gt;\[\begin{align}
-f_{Y}(y) &amp;amp;  = \frac{dP(Y \le y)}{dy}   \tag{5} 
+f_{Y}(y) &amp;amp;  = \frac{dP(Y \le y)}{dy}   \tag{7} 
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Applying the identity in &lt;a href=&#34;#eq:Ydens&#34;&gt;(5)&lt;/a&gt; to the integral in &lt;a href=&#34;#eq:YInt&#34;&gt;(4)&lt;/a&gt; and using the &lt;a href=&#34;https://en.wikipedia.org/wiki/Leibniz_integral_rule&#34;&gt;Leibniz integral rule&lt;/a&gt;, we get the following:&lt;/p&gt;
+&lt;p&gt;Applying the identity in &lt;a href=&#34;#eq:Ydens&#34;&gt;(7)&lt;/a&gt; to the integral in &lt;a href=&#34;#eq:YInt&#34;&gt;(6)&lt;/a&gt; and using the &lt;a href=&#34;https://en.wikipedia.org/wiki/Leibniz_integral_rule&#34;&gt;Leibniz integral rule&lt;/a&gt;, we get the following:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:YdensForm&#34;&gt;\[\begin{align}
 f_{Y}(y) &amp;amp;  = \frac{d}{dy} \int_{0}^{\infty} \left( \int_{0}^{y-x_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \nonumber \\
 \implies f_{Y}(y) &amp;amp;  = \int_{0}^{\infty} \left( \frac{1}{\Gamma(\alpha_1)}  (y-x_2)^{(\alpha_1 -1)} e^{-(y-x_2)} \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \nonumber \\
-\implies f_{Y}(y) &amp;amp;  = \int_{0}^{\infty} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} (y-x_2)^{(\alpha_1 -1)} x_{2}^{(\alpha_2 -1)} e^{-y} dX_2 \tag{6} 
+\implies f_{Y}(y) &amp;amp;  = \int_{0}^{\infty} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} (y-x_2)^{(\alpha_1 -1)} x_{2}^{(\alpha_2 -1)} e^{-y} dX_2 \tag{8} 
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;We now attempt to convert the integral in &lt;a href=&#34;#eq:YdensForm&#34;&gt;(6)&lt;/a&gt; into a form that is well known. We set &lt;span class=&#34;math inline&#34;&gt;\(Z = \frac{X_2}{y}\)&lt;/span&gt;, which gives us &lt;span class=&#34;math inline&#34;&gt;\(dX_2 = ydZ\)&lt;/span&gt;, and also note that &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; can take the range of values bounded by the interval &lt;span class=&#34;math inline&#34;&gt;\((0,1)\)&lt;/span&gt; (&lt;span class=&#34;math inline&#34;&gt;\(Z \rightarrow 0\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(X_2 \rightarrow 0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(Z \rightarrow 1\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(X_2 \rightarrow \infty\)&lt;/span&gt;, since &lt;span class=&#34;math inline&#34;&gt;\(Y \rightarrow \infty\)&lt;/span&gt; too). Replacing &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; with &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; in &lt;a href=&#34;#eq:YdensForm&#34;&gt;(6)&lt;/a&gt;, we get:&lt;/p&gt;
+&lt;p&gt;We now attempt to convert the integral in &lt;a href=&#34;#eq:YdensForm&#34;&gt;(8)&lt;/a&gt; into a form that is well known. We set &lt;span class=&#34;math inline&#34;&gt;\(Z = \frac{X_2}{y}\)&lt;/span&gt;, which gives us &lt;span class=&#34;math inline&#34;&gt;\(dX_2 = ydZ\)&lt;/span&gt;, and also note that &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; can take the range of values bounded by the interval &lt;span class=&#34;math inline&#34;&gt;\((0,1)\)&lt;/span&gt; (&lt;span class=&#34;math inline&#34;&gt;\(Z \rightarrow 0\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(X_2 \rightarrow 0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(Z \rightarrow 1\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(X_2 \rightarrow \infty\)&lt;/span&gt;, since &lt;span class=&#34;math inline&#34;&gt;\(Y \rightarrow \infty\)&lt;/span&gt; too). Replacing &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; with &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; in &lt;a href=&#34;#eq:YdensForm&#34;&gt;(8)&lt;/a&gt;, we get:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:YdensTrans&#34;&gt;\[\begin{align}
 f_{Y}(y) &amp;amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} (y- yz)^{(\alpha_1 -1)} (yz)^{(\alpha_2 -1)} e^{-y} ydZ \nonumber \\
 \implies f_{Y}(y) &amp;amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 -1)} (1- z)^{(\alpha_1 -1)} y^{(\alpha_2 -1)} z^{(\alpha_2 -1)} e^{-y} ydZ \nonumber \\
 \implies f_{Y}(y) &amp;amp;  = \int_{0}^{1} \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ \nonumber \\
-\implies f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y} \int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ \tag{7} 
+\implies f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y} \int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ \tag{9} 
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;The integral in &lt;a href=&#34;#eq:YdensTrans&#34;&gt;(7)&lt;/a&gt; is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Beta_function&#34;&gt;Beta function&lt;/a&gt;, whose value is given below:&lt;/p&gt;
+&lt;p&gt;The integral in &lt;a href=&#34;#eq:YdensTrans&#34;&gt;(9)&lt;/a&gt; is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Beta_function&#34;&gt;Beta function&lt;/a&gt;, whose value is given below:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:BetaForm&#34;&gt;\[\begin{align}
-\int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ = \frac{\Gamma(\alpha_1)\Gamma(\alpha_2)}{\Gamma(\alpha_1 + \alpha_2)} \tag{8}
+\int_{0}^{1} (1- z)^{(\alpha_1 -1)} z^{(\alpha_2 -1)}  dZ = \frac{\Gamma(\alpha_1)\Gamma(\alpha_2)}{\Gamma(\alpha_1 + \alpha_2)} \tag{10}
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Substituting &lt;a href=&#34;#eq:BetaForm&#34;&gt;(8)&lt;/a&gt; back into &lt;a href=&#34;#eq:YdensTrans&#34;&gt;(7)&lt;/a&gt;, we get:
+&lt;p&gt;Substituting &lt;a href=&#34;#eq:BetaForm&#34;&gt;(10)&lt;/a&gt; back into &lt;a href=&#34;#eq:YdensTrans&#34;&gt;(9)&lt;/a&gt;, we get:
 &lt;span class=&#34;math display&#34; id=&#34;eq:YdensFinal&#34;&gt;\[\begin{align}
 f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1)} \frac{1}{\Gamma(\alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y}  \frac{\Gamma(\alpha_1)\Gamma(\alpha_2)}{\Gamma(\alpha_1 + \alpha_2)}\nonumber \\
-\implies f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1 + \alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y}  \tag{9} \\
+\implies f_{Y}(y) &amp;amp;  =  \frac{1}{\Gamma(\alpha_1 + \alpha_2)} y^{(\alpha_1 + \alpha_2 -1)} e^{-y}  \tag{11} \\
 \implies f_{Y}(y) &amp;amp; = Gamma(\alpha_1 + \alpha_2, 1) \nonumber
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;From &lt;a href=&#34;#eq:YdensFinal&#34;&gt;(9)&lt;/a&gt;, we have now proved that the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; holds for &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;. We now assume this is true for &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; and show that this property holds for &lt;span class=&#34;math inline&#34;&gt;\(N+1\)&lt;/span&gt;. Now, let &lt;span class=&#34;math inline&#34;&gt;\(Y = \sum_{i=1}^{N} X_i\)&lt;/span&gt;, which gives us the following identities:&lt;/p&gt;
+&lt;p&gt;From &lt;a href=&#34;#eq:YdensFinal&#34;&gt;(11)&lt;/a&gt;, we have now proved that the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; holds for &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;. We now assume this is true for &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; and show that this property holds for &lt;span class=&#34;math inline&#34;&gt;\(N+1\)&lt;/span&gt;. Now, let &lt;span class=&#34;math inline&#34;&gt;\(Y = \sum_{i=1}^{N} X_i\)&lt;/span&gt;, which gives us the following identities:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:YNdist&#34; id=&#34;eq:XnplSum&#34;&gt;\[\begin{align}
-\sum_{i=1}^{N+1} X_i &amp;amp;  = Y + X_{N+1} \tag{10} \\
-Y &amp;amp; \sim Gamma(\sum_{i=1}^{N} \alpha_i,1) \tag{11}
+\sum_{i=1}^{N+1} X_i &amp;amp;  = Y + X_{N+1} \tag{12} \\
+Y &amp;amp; \sim Gamma(\sum_{i=1}^{N} \alpha_i,1) \tag{13}
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;#eq:YNdist&#34;&gt;(11)&lt;/a&gt; follows from the induction assumption. Since the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; is true for &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;, we combine this with the identities in &lt;a href=&#34;#eq:XnplSum&#34;&gt;(10)&lt;/a&gt; &amp;amp; &lt;a href=&#34;#eq:YNdist&#34;&gt;(11)&lt;/a&gt; to get:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;#eq:YNdist&#34;&gt;(13)&lt;/a&gt; follows from the induction assumption. Since the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; is true for &lt;span class=&#34;math inline&#34;&gt;\(N=2\)&lt;/span&gt;, we combine this with the identities in &lt;a href=&#34;#eq:XnplSum&#34;&gt;(12)&lt;/a&gt; &amp;amp; &lt;a href=&#34;#eq:YNdist&#34;&gt;(13)&lt;/a&gt; to get:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:YNpldist&#34;&gt;\[\begin{align}
 \sum_{i=1}^{N+1} X_i &amp;amp;  = Y + X_{N+1} \sim Gamma(\sum_{i=1}^{N} \alpha_i + \alpha_{N+1},1) \nonumber \\
-\implies \sum_{i=1}^{N+1} X_i &amp;amp; \sim Gamma(\sum_{i=1}^{N+1} \alpha_i,1) \tag{12} 
+\implies \sum_{i=1}^{N+1} X_i &amp;amp; \sim Gamma(\sum_{i=1}^{N+1} \alpha_i,1) \tag{14} 
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;#eq:YNpldist&#34;&gt;(12)&lt;/a&gt; shows that the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; is true for &lt;span class=&#34;math inline&#34;&gt;\(N+1\)&lt;/span&gt;, completing the proof.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;#eq:YNpldist&#34;&gt;(14)&lt;/a&gt; shows that the property in &lt;a href=&#34;#eq:GammaSum&#34;&gt;(1)&lt;/a&gt; is true for &lt;span class=&#34;math inline&#34;&gt;\(N+1\)&lt;/span&gt;, completing the proof.&lt;/p&gt;
 &lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;

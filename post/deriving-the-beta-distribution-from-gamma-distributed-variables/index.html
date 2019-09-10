@@ -478,10 +478,9 @@ Beta(\alpha_i, \sum_{j \ne i} \alpha_j) = f_{Y}(y; \{\alpha_i\}_{i=1,\dots,N}) =
 P(Y \le y)  &amp; =  P(\frac{X_1}{X_1 + X_2} \le y)   \nonumber \\
 \implies P(Y \le y)  &amp; = P(X_1 \le y(X_1 + X_2))   \nonumber \\
 \implies P(Y \le y)  &amp; = P(X_1 (1-y) \le y X_2))   \nonumber \\
-\implies P(Y \le y)  &amp; = P(X_1  \le \frac{y}{1-y} X_2))   \nonumber \\
-\implies P(Y \le y) &amp;  = P(X_1 \le \frac{y}{1-y} X_2 | X_2)P(X_2)   \tag{4} 
+\implies P(Y \le y)  &amp; = P(X_1  \le \frac{y}{1-y} X_2))     \tag{4} 
 \end{align}\]</span></p>
-<p>The expression in <a href="#eq:YdisInit">(4)</a> is a double integral, one to vary <span class="math inline">\(X_2\)</span> over the range of values it can possibly take: <span class="math inline">\((0, \infty)\)</span>, and the other to vary <span class="math inline">\(X_1\)</span> from <span class="math inline">\((0, \frac{y}{1-y} X_2)\)</span>. This integral takes the form below:</p>
+<p>Using similar logic from the <a href="https://jmodeler.github.io/post/additive-property-of-the-gamma-distribution/">previous post</a>, we know that the expression in <a href="#eq:YdisInit">(4)</a> is a double integral, one to vary <span class="math inline">\(X_2\)</span> over the range of values it can possibly take: <span class="math inline">\((0, \infty)\)</span>, and the other to vary <span class="math inline">\(X_1\)</span> from <span class="math inline">\((0, \frac{y}{1-y} X_2)\)</span>. This integral takes the form below:</p>
 <p><span class="math display" id="eq:YInt">\[\begin{align}
 P(Y \le y) &amp;  = P(X_1 \le \frac{y}{1-y} X_2 | X_2)P(X_2) = \int_{0}^{\infty} \left( \int_{0}^{\frac{y}{1-y} X_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{5} 
 \end{align}\]</span></p>

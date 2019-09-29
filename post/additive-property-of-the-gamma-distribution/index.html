@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, @antoniak1974mixtures)) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
+  <meta name="description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson (1973), Antoniak (1974))) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
 As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained here).">
 
   
@@ -112,7 +112,7 @@ As the title suggests, we start with the Gamma distribution. We use the shape an
   <meta property="og:site_name" content="Journeyman Modeler">
   <meta property="og:url" content="/post/additive-property-of-the-gamma-distribution/">
   <meta property="og:title" content="Additive Property of the Gamma Distribution | Journeyman Modeler">
-  <meta property="og:description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson 1973, @antoniak1974mixtures)) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
+  <meta property="og:description" content="While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson (1973), Antoniak (1974))) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
 As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained here)."><meta property="og:image" content="/img/icon-192.png">
   <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
@@ -330,7 +330,7 @@ As the title suggests, we start with the Gamma distribution. We use the shape an
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    4 min read
+    5 min read
   </span>
   
 
@@ -462,7 +462,7 @@ As the title suggests, we start with the Gamma distribution. We use the shape an
       
 
 
-<p>While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field <span class="citation">(Ferguson <a href="#ref-ferguson1973bayesian">1973</a>, @antoniak1974mixtures)</span>) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.</p>
+<p>While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (<span class="citation">Ferguson (<a href="#ref-ferguson1973bayesian" role="doc-biblioref">1973</a>)</span>, <span class="citation">Antoniak (<a href="#ref-antoniak1974mixtures" role="doc-biblioref">1974</a>)</span>)) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.</p>
 <p>As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained <a href="https://en.wikipedia.org/wiki/Gamma_distribution">here</a>). Without loss of generality in this case, we also set the rate parameter $ = 1$ for all random variables unless otherwise mentioned. We want to prove the additive property of the gamma distribution:</p>
 <p><span class="math display" id="eq:GammaSum">\[\begin{align}
 \sum_{i=1}^{N} X_i \sim Gamma(\sum_{i=1}^{N}\alpha_i, 1)                    \nonumber \\

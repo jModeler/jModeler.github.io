@@ -40,7 +40,7 @@ P(Y \le y)  &amp;amp; =  P(\frac{X_1}{X_1 + X_2} \le y)   \nonumber \\
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Using similar logic from the &lt;a href=&#34;https://jmodeler.github.io/post/additive-property-of-the-gamma-distribution/&#34;&gt;previous post&lt;/a&gt;, we know that the expression in &lt;a href=&#34;#eq:YdisInit&#34;&gt;(4)&lt;/a&gt; is a double integral, one to vary &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; over the range of values it can possibly take: &lt;span class=&#34;math inline&#34;&gt;\((0, \infty)\)&lt;/span&gt;, and the other to vary &lt;span class=&#34;math inline&#34;&gt;\(X_1\)&lt;/span&gt; from &lt;span class=&#34;math inline&#34;&gt;\((0, \frac{y}{1-y} X_2)\)&lt;/span&gt;. This integral takes the form below:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:YInt&#34;&gt;\[\begin{align}
-P(Y \le y) &amp;amp;  = P(X_1 \le \frac{y}{1-y} X_2 | X_2)P(X_2) = \int_{0}^{\infty} \left( \int_{0}^{\frac{y}{1-y} X_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{5} 
+P(Y \le y) &amp;amp;  = P(X_1  \le \frac{y}{1-y} X_2)) = \int_{0}^{\infty} \left( \int_{0}^{\frac{y}{1-y} X_2}  \frac{1}{\Gamma(\alpha_1)}  x_{1}^{(\alpha_1 -1)} e^{-x_1} dX_1 \right)  \frac{1}{\Gamma(\alpha_2)}  x_{2}^{(\alpha_2 -1)} e^{-x_2} dX_2 \tag{5} 
 \end{align}\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Note also, that the density of &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; is given by:
 &lt;span class=&#34;math display&#34; id=&#34;eq:Ydens&#34;&gt;\[\begin{align}

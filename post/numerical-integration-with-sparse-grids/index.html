@@ -462,14 +462,15 @@
 
 <p>I recently read a paper <span class="citation">(Heiss and Winschel <a href="#ref-heiss2008likelihood">2008</a>)</span> that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error <span class="citation">(Skrainka and Judd <a href="#ref-skrainka2011high">2011</a>)</span>. This post attempts to demonstrate the claim in <span class="citation">Skrainka and Judd (<a href="#ref-skrainka2011high">2011</a>)</span> using two very simple integrals, to which we already know the value. I attempt to compare the outcomes from using MC and SG.</p>
 <p>The integrals I’ll be evaluating are:</p>
-<span class="math display" id="eq:sumint">\[\begin{equation}
-\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dX   \tag{1} 
-\end{equation}\]</span>
-and
+<p><span class="math display" id="eq:sumint">\[\begin{equation}
+\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dF_{X}   \tag{1} 
+\end{equation}\]</span></p>
+<p>and
 <span class="math display" id="eq:prodint">\[\begin{equation}
-\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dX \tag{2}
-\end{equation}\]</span>
-<p>where <span class="math inline">\(X = \{x_i\}_{i=1}^{5}\)</span> is a five dimensional random variable, which is distributed according to the multivariate standard normal: <span class="math display">\[
+\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dF_{X} \tag{2}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(X = \{x_i\}_{i=1}^{5}\)</span> is a five dimensional random variable, which is distributed according to the multivariate standard normal:
+<span class="math display">\[
 X \sim N\left( \left[ \begin{array}
 {r}
 0  \\
@@ -525,7 +526,8 @@ mc_val &lt;- mc_int(s, n, mu = rep(0,5), sigma = diag(5))
 mc_val</code></pre>
 <pre><code>## [1] 0.007150433</code></pre>
 <p>The result, 0.00715 is not far off from the true value of <span class="math inline">\(0\)</span> at first glance, however, we need to compare this to the result from the SG approach.</p>
-<p>R has a package that generates sparse grids for numerical integration as described in <span class="citation">Heiss and Winschel (<a href="#ref-heiss2008likelihood">2008</a>)</span>, called <tt><a href="https://cran.r-project.org/web/packages/SparseGrid/index.html">SparseGrid</a></tt>. We now use the nodes and weights generated from this package to approximate the first integral. I re-use some of the code provided in the documentation for the <tt><a href="https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf">SparseGrid</a></tt> package in R.</p>
+<p>R has a package that generates sparse grids for numerical integration as described in <span class="citation">Heiss and Winschel (<a href="#ref-heiss2008likelihood">2008</a>)</span>, called <tt><a href="https://cran.r-project.org/web/packages/SparseGrid/index.html">SparseGrid</a></tt>. We now use the nodes and weights generated from this package to approximate the first integral.
+I re-use some of the code provided in the documentation for the <tt><a href="https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf">SparseGrid</a></tt> package in R.</p>
 <pre class="r"><code>library(SparseGrid)
 
 #generate sparse grids for a 5 dimensional RV with accuracy level 2
@@ -587,10 +589,10 @@ mc_int(p, n, mu = rep(0,5), sigma = diag(5))</code></pre>
 <h2>References</h2>
 <div id="refs" class="references">
 <div id="ref-mvt">
-<p>Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2019. <em>mvtnorm: Multivariate Normal and T Distributions</em>. <a href="https://CRAN.R-project.org/package=mvtnorm" class="uri">https://CRAN.R-project.org/package=mvtnorm</a>.</p>
+<p>Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2019. <em>mvtnorm: Multivariate Normal and T Distributions</em>. <a href="https://CRAN.R-project.org/package=mvtnorm">https://CRAN.R-project.org/package=mvtnorm</a>.</p>
 </div>
 <div id="ref-heiss2008likelihood">
-<p>Heiss, Florian, and Viktor Winschel. 2008. “Likelihood Approximation by Numerical Integration on Sparse Grids.” <em>Journal of Econometrics</em> 144 (1). Elsevier: 62–80.</p>
+<p>Heiss, Florian, and Viktor Winschel. 2008. “Likelihood Approximation by Numerical Integration on Sparse Grids.” <em>Journal of Econometrics</em> 144 (1): 62–80.</p>
 </div>
 <div id="ref-skrainka2011high">
 <p>Skrainka, Benjamin S, and Kenneth L Judd. 2011. “High Performance Quadrature Rules: How Numerical Integration Affects a Popular Model of Product Differentiation.” <em>Available at SSRN 1870703</em>.</p>

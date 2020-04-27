@@ -6,10 +6,155 @@
     <description>Recent content on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Homotopy Principle: Simple Examples</title>
+      <link>/post/the-homotopy-principle-simple-examples/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/the-homotopy-principle-simple-examples/</guid>
+      <description>
+
+
+&lt;p&gt;This post presents 3 simple examples of the homotopy principle applied to (fairly easy) linear and nonlinear systems of equations. At a very abstract level, given a system of equations for which a solution is needed, we convert this system to one whose solution we already know (or is easy to find out), and then bend this system till we get the solution to the original set of equations. These methods have very broad applications &lt;span class=&#34;citation&#34;&gt;(Garcia and Zangwill &lt;a href=&#34;#ref-garciapathways&#34; role=&#34;doc-biblioref&#34;&gt;1981&lt;/a&gt;)&lt;/span&gt;, and have been applied in the context of finding equlibria in Static Games &lt;span class=&#34;citation&#34;&gt;(Bajari et al. &lt;a href=&#34;#ref-Bajari2010&#34; role=&#34;doc-biblioref&#34;&gt;2010&lt;/a&gt;)&lt;/span&gt; and Dynamic Games &lt;span class=&#34;citation&#34;&gt;(Borkovsky, Doraszelski, and Kryukov &lt;a href=&#34;#ref-Borkovsky2010&#34; role=&#34;doc-biblioref&#34;&gt;2010&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;div id=&#34;example-1-linear-system&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Example 1: Linear System&lt;/h2&gt;
+&lt;p&gt;Say we want to find the solution to the following system of linear equations:
+&lt;span class=&#34;math display&#34; id=&#34;eq:linEx1&#34;&gt;\[\begin{align}
+\left[ \begin{array}
+{rrrrr}
+1 &amp;amp; 2   \\
+3 &amp;amp; 4   \\
+\end{array}\right] \left[ \begin{array} {r} 
+x_1 \\
+x_2 \\
+\end{array} \right] = \left[ \begin{array} {l} 
+5 \\
+11 \\
+\end{array} \right] \tag{1} 
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Readers should very easily be able to verify that the unique solution to this system is
+&lt;span class=&#34;math display&#34;&gt;\[
+(x_1,x_2) = (1,2)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Let’s convert this system and introduce an additional parameter &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;, called the &lt;em&gt;homotopy parameter&lt;/em&gt;, which varies from &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; to &lt;span class=&#34;math inline&#34;&gt;\(1\)&lt;/span&gt;. Let’s call this new system &lt;span class=&#34;math inline&#34;&gt;\(H(x_1, x_2, t)\)&lt;/span&gt;
+&lt;span class=&#34;math display&#34; id=&#34;eq:HFunc&#34;&gt;\[\begin{align}
+\left[ \begin{array}
+{rr}
+1 &amp;amp; 2   \\
+3 &amp;amp; 4   \\
+\end{array}\right] \left[ \begin{array} {r} 
+x_1 \\
+x_2 \\
+\end{array} \right] = \left[ \begin{array} {l} 
+5t \\
+11t \\
+\end{array} \right] \tag{2} 
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;When &lt;span class=&#34;math inline&#34;&gt;\(t=0\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(H(x_1, x_2, 0)\)&lt;/span&gt; yields the trivial (and only) solution &lt;span class=&#34;math inline&#34;&gt;\((x_1,x_2) = (0,0)\)&lt;/span&gt;. When &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt;, we get our original system of equations back. When we solve for &lt;span class=&#34;math inline&#34;&gt;\((x_1, x_2)\)&lt;/span&gt; as a function of &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;, we get:
+&lt;span class=&#34;math display&#34;&gt;\[
+(x_1(t),x_2(t)) = (t,2t)
+\]&lt;/span&gt;
+At &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt;, this will give us the solution we desire. Tracing the path of the solution gives us the following plots:
+&lt;img src=&#34;./post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;From this very simple example, we note that the general process followed is given below &lt;span class=&#34;citation&#34;&gt;(Garcia and Zangwill &lt;a href=&#34;#ref-garciapathways&#34; role=&#34;doc-biblioref&#34;&gt;1981&lt;/a&gt;)&lt;/span&gt;:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Convert the system of equations into one that has a known solution (i.e. &lt;span class=&#34;math inline&#34;&gt;\(H(x_1, x_2, 0)\)&lt;/span&gt; case above)&lt;/li&gt;
+&lt;li&gt;Introduce a new parameter &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;, that gives the known system at &lt;span class=&#34;math inline&#34;&gt;\(t=0\)&lt;/span&gt; and the system for which the solutions are desired when &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;Trace the path of the solutions by changing the value of &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; from &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; to &lt;span class=&#34;math inline&#34;&gt;\(1\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;example-2-nonlinear-system&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Example 2: Nonlinear System&lt;/h2&gt;
+&lt;p&gt;Consider the following system of equations (from chapter 1, exercise 6 of &lt;span class=&#34;citation&#34;&gt;(Garcia and Zangwill &lt;a href=&#34;#ref-garciapathways&#34; role=&#34;doc-biblioref&#34;&gt;1981&lt;/a&gt;)&lt;/span&gt;):
+&lt;span class=&#34;math display&#34; id=&#34;eq:nonlinEx1&#34;&gt;\[\begin{align}
+F(x_1, x_2) = 
+\left[ \begin{array}
+{l}
+e^{2 x_1} - x^{2}_{2} + 3   \\
+4x_{2}e^{2 x_1} - x^{3}_{2}   \\
+\end{array} \right]
+ = \left[ \begin{array} {l} 
+0 \\
+0 \\
+\end{array} \right] \tag{3} \\
+(x_1, x_2) \in \mathbb{R}^2 \\
+F: \mathbb{R}^2 \rightarrow \mathbb{R}^2
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Again, readers should verify that the solutions to this system of equations are &lt;span class=&#34;math inline&#34;&gt;\((x1, x2) = (0, -2) \, \&amp;amp; \, (x1, x2) = (0, 2)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;We now introduce the homotopy parameter &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;, and define &lt;span class=&#34;math inline&#34;&gt;\(H(x_1, x_2, t)\)&lt;/span&gt; as:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:HfuncNonlin1&#34;&gt;\[\begin{align}
+H(x_1, x_2, t) = F(x_1, x_2) - (1-t)F(0, 0) \tag{4}
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The formulation in &lt;a href=&#34;#eq:HfuncNonlin1&#34;&gt;(4)&lt;/a&gt; is called the &lt;em&gt;Newton Homotopy&lt;/em&gt; &lt;span class=&#34;citation&#34;&gt;(Garcia and Zangwill &lt;a href=&#34;#ref-garciapathways&#34; role=&#34;doc-biblioref&#34;&gt;1981&lt;/a&gt;)&lt;/span&gt;. A distinct advantage of this formulation, is that at &lt;span class=&#34;math inline&#34;&gt;\(t=0\)&lt;/span&gt;, it is easy to see that the solution to the system is &lt;span class=&#34;math inline&#34;&gt;\((0, 0)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;For any &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; between &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(1\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(H(x_1, x_2, t)\)&lt;/span&gt; becomes:
+&lt;span class=&#34;math display&#34; id=&#34;eq:HfuncNonlin2&#34;&gt;\[\begin{align}
+\left[ \begin{array}
+{l}
+e^{2 x_1} - x^{2}_{2} + 4t - 1   \\
+4x_{2}e^{2 x_1} - x^{3}_{2}   \\
+\end{array} \right]
+ = \left[ \begin{array} {l} 
+0 \\
+0 \\
+\end{array} \right] 
+\tag{5}
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We now attempt to find &lt;span class=&#34;math inline&#34;&gt;\((x_1, x_2)\)&lt;/span&gt; as functions of &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;. From &lt;a href=&#34;#eq:HfuncNonlin2&#34;&gt;(5)&lt;/a&gt;, we have:
+&lt;span class=&#34;math display&#34; id=&#34;eq:x2Sol&#34;&gt;\[\begin{align}
+  x_{2}^{3} = 4x_{2}e^{2 x_1} \nonumber \\
+  x_2 = 0 \,\,\,\,\, OR \,\,\,\,\, x_{2} = \pm 2e^{x_1} \tag{6}
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;When &lt;span class=&#34;math inline&#34;&gt;\(x_2 = 0\)&lt;/span&gt;, putting this back in &lt;a href=&#34;#eq:HfuncNonlin2&#34;&gt;(5)&lt;/a&gt; we get:
+&lt;span class=&#34;math display&#34; id=&#34;eq:x1Sol1&#34;&gt;\[\begin{align}
+  e^{2 x_1} + 4t - 1 = 0 \nonumber \\
+  \implies x_1 = \frac{1}{2} log(1-4t) \tag{7} \\
+  where \,\,\,\, 0 \le t \le 1/4
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;When &lt;span class=&#34;math inline&#34;&gt;\(x_2 = \pm 2e^{x_1}\)&lt;/span&gt;, putting this back in &lt;a href=&#34;#eq:HfuncNonlin2&#34;&gt;(5)&lt;/a&gt; we get:
+&lt;span class=&#34;math display&#34; id=&#34;eq:x1Sol2&#34;&gt;\[\begin{align}
+  -3e^{2 x_1} + 4t - 1 = 0 \nonumber \\
+  \implies x_1 = \frac{1}{2} log\left(\frac{4t-1}{3}\right) \tag{8} \\
+  where \,\,\,\, 1/4 &amp;lt; t \le 1
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Combining all the findings from &lt;a href=&#34;#eq:x2Sol&#34;&gt;(6)&lt;/a&gt;, &lt;a href=&#34;#eq:x1Sol1&#34;&gt;(7)&lt;/a&gt; and &lt;a href=&#34;#eq:x1Sol2&#34;&gt;(8)&lt;/a&gt;, we get:
+&lt;span class=&#34;math display&#34; id=&#34;eq:x2t&#34; id=&#34;eq:x1t&#34;&gt;\[\begin{align}
+  x_1(t) = \begin{cases}
+        \frac{1}{2} log(1-4t) &amp;amp; \text{for } 0\le t \le 1/4\\
+        \frac{1}{2} log\left(\frac{4t-1}{3}\right) &amp;amp; \text{for } 1/4 &amp;lt; t \leq 1
+        \end{cases} \tag{9} \\
+    x_1(t) = \begin{cases}
+        0 &amp;amp; \text{for } 0\le t \le 1/4\\
+        \pm 2 \sqrt{\left(\frac{4t-1}{3}\right)} &amp;amp; \text{for } 1/4 &amp;lt; t \leq 1
+        \end{cases} \tag{10}
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Which gives us the solution to the system of equations in &lt;a href=&#34;#eq:nonlinEx1&#34;&gt;(3)&lt;/a&gt; at &lt;span class=&#34;math inline&#34;&gt;\(t = 1\)&lt;/span&gt;. However, note that the functions &lt;span class=&#34;math inline&#34;&gt;\(x_1(t), x_2(t)\)&lt;/span&gt; are non-differentiable, which disqualifies them from being solution paths &lt;span class=&#34;citation&#34;&gt;(Garcia and Zangwill &lt;a href=&#34;#ref-garciapathways&#34; role=&#34;doc-biblioref&#34;&gt;1981&lt;/a&gt;)&lt;/span&gt;. This is evident in the plots shown below:
+&lt;img src=&#34;./post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;./post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;One could always try another formulation for &lt;span class=&#34;math inline&#34;&gt;\(H(x_1, x_2, t)\)&lt;/span&gt; which leads to well defined paths to the desired solution from the known solution (i.e. the solution to &lt;span class=&#34;math inline&#34;&gt;\(H(x_1, x_2, 0)\)&lt;/span&gt;). That is left as an exercise to the reader.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-Bajari2010&#34;&gt;
+&lt;p&gt;Bajari, Patrick, Han Hong, John Krainer, and Denis Nekipelov. 2010. “Computing Equilibria in Static Games of Incomplete Information Using the All-Solution Homotopy.” &lt;em&gt;Operations Research&lt;/em&gt; 58 (4-part 2).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Borkovsky2010&#34;&gt;
+&lt;p&gt;Borkovsky, Ron N., Ulrich Doraszelski, and Yaroslav Kryukov. 2010. “A user’s guide to solving dynamic stochastic games using the homotopy method.” &lt;em&gt;Operations Research&lt;/em&gt; 58 (4 PART 2): 1116–32. &lt;a href=&#34;https://doi.org/10.1287/opre.1100.0843&#34;&gt;https://doi.org/10.1287/opre.1100.0843&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-garciapathways&#34;&gt;
+&lt;p&gt;Garcia, C B, and W I Zangwill. 1981. “Pathways to solutions, fixed points, and equilibria. 1981.” Prentice-Hall, Englewood Cliffs, NJ.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Deriving the Beta Distribution from Gamma Distributed Variables</title>

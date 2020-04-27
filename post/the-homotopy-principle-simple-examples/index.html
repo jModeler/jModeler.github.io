@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Journeyman Modeler">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This post presents 3 simple examples of the homotopy principle applied to (fairly easy) linear and nonlinear systems of equations. At a very abstract level, given a system of equations for which a solution is needed, we convert this system to one whose solution we already know (or is easy to find out), and then bend this system till we get the solution to the original set of equations. These methods have very broad applications (Garcia and Zangwill 1981), and have been applied in the context of finding equlibria in Static Games (Bajari et al.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="../../post/the-homotopy-principle-simple-examples/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="hsl(339, 90%, 68%)">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light" disabled>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="../../css/academic.min.ef95877d47e309682d2f04bdaf1ed0ed.css">
+
+  
+
+  
+  
+  
+
+  
+
+  
+
+  <link rel="icon" type="image/png" href="../../img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
+
+  <link rel="canonical" href="../../post/the-homotopy-principle-simple-examples/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Journeyman Modeler">
+  <meta property="og:url" content="/post/the-homotopy-principle-simple-examples/">
+  <meta property="og:title" content="The Homotopy Principle: Simple Examples | Journeyman Modeler">
+  <meta property="og:description" content="This post presents 3 simple examples of the homotopy principle applied to (fairly easy) linear and nonlinear systems of equations. At a very abstract level, given a system of equations for which a solution is needed, we convert this system to one whose solution we already know (or is easy to find out), and then bend this system till we get the solution to the original set of equations. These methods have very broad applications (Garcia and Zangwill 1981), and have been applied in the context of finding equlibria in Static Games (Bajari et al."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2020-04-26T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2020-04-26T21:59:54-04:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>The Homotopy Principle: Simple Examples | Journeyman Modeler</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="dark">
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="../../">Journeyman Modeler</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="../../#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="../../#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">The Homotopy Principle: Simple Examples</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2020-04-26 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2020-04-26 21:59:54 -0400 EDT" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    <time>Apr 26, 2020</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="../../categories/scientific-computing/">Scientific Computing</a></span>
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/the-homotopy-principle-simple-examples/&amp;text=The%20Homotopy%20Principle:%20Simple%20Examples" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/the-homotopy-principle-simple-examples/&amp;t=The%20Homotopy%20Principle:%20Simple%20Examples" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=The%20Homotopy%20Principle:%20Simple%20Examples&amp;body=/post/the-homotopy-principle-simple-examples/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/the-homotopy-principle-simple-examples/&amp;title=The%20Homotopy%20Principle:%20Simple%20Examples" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=The%20Homotopy%20Principle:%20Simple%20Examples%20/post/the-homotopy-principle-simple-examples/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/the-homotopy-principle-simple-examples/&amp;title=The%20Homotopy%20Principle:%20Simple%20Examples" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>This post presents 3 simple examples of the homotopy principle applied to (fairly easy) linear and nonlinear systems of equations. At a very abstract level, given a system of equations for which a solution is needed, we convert this system to one whose solution we already know (or is easy to find out), and then bend this system till we get the solution to the original set of equations. These methods have very broad applications <span class="citation">(Garcia and Zangwill <a href="#ref-garciapathways" role="doc-biblioref">1981</a>)</span>, and have been applied in the context of finding equlibria in Static Games <span class="citation">(Bajari et al. <a href="#ref-Bajari2010" role="doc-biblioref">2010</a>)</span> and Dynamic Games <span class="citation">(Borkovsky, Doraszelski, and Kryukov <a href="#ref-Borkovsky2010" role="doc-biblioref">2010</a>)</span>.</p>
+<div id="example-1-linear-system" class="section level2">
+<h2>Example 1: Linear System</h2>
+<p>Say we want to find the solution to the following system of linear equations:
+<span class="math display" id="eq:linEx1">\[\begin{align}
+\left[ \begin{array}
+{rrrrr}
+1 &amp; 2   \\
+3 &amp; 4   \\
+\end{array}\right] \left[ \begin{array} {r} 
+x_1 \\
+x_2 \\
+\end{array} \right] = \left[ \begin{array} {l} 
+5 \\
+11 \\
+\end{array} \right] \tag{1} 
+\end{align}\]</span></p>
+<p>Readers should very easily be able to verify that the unique solution to this system is
+<span class="math display">\[
+(x_1,x_2) = (1,2)
+\]</span></p>
+<p>Let’s convert this system and introduce an additional parameter <span class="math inline">\(t\)</span>, called the <em>homotopy parameter</em>, which varies from <span class="math inline">\(0\)</span> to <span class="math inline">\(1\)</span>. Let’s call this new system <span class="math inline">\(H(x_1, x_2, t)\)</span>
+<span class="math display" id="eq:HFunc">\[\begin{align}
+\left[ \begin{array}
+{rr}
+1 &amp; 2   \\
+3 &amp; 4   \\
+\end{array}\right] \left[ \begin{array} {r} 
+x_1 \\
+x_2 \\
+\end{array} \right] = \left[ \begin{array} {l} 
+5t \\
+11t \\
+\end{array} \right] \tag{2} 
+\end{align}\]</span></p>
+<p>When <span class="math inline">\(t=0\)</span>, <span class="math inline">\(H(x_1, x_2, 0)\)</span> yields the trivial (and only) solution <span class="math inline">\((x_1,x_2) = (0,0)\)</span>. When <span class="math inline">\(t=1\)</span>, we get our original system of equations back. When we solve for <span class="math inline">\((x_1, x_2)\)</span> as a function of <span class="math inline">\(t\)</span>, we get:
+<span class="math display">\[
+(x_1(t),x_2(t)) = (t,2t)
+\]</span>
+At <span class="math inline">\(t=1\)</span>, this will give us the solution we desire. Tracing the path of the solution gives us the following plots:
+<img src="../../post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="../../post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="../../post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>From this very simple example, we note that the general process followed is given below <span class="citation">(Garcia and Zangwill <a href="#ref-garciapathways" role="doc-biblioref">1981</a>)</span>:</p>
+<ol style="list-style-type: decimal">
+<li>Convert the system of equations into one that has a known solution (i.e. <span class="math inline">\(H(x_1, x_2, 0)\)</span> case above)</li>
+<li>Introduce a new parameter <span class="math inline">\(t\)</span>, that gives the known system at <span class="math inline">\(t=0\)</span> and the system for which the solutions are desired when <span class="math inline">\(t=1\)</span></li>
+<li>Trace the path of the solutions by changing the value of <span class="math inline">\(t\)</span> from <span class="math inline">\(0\)</span> to <span class="math inline">\(1\)</span></li>
+</ol>
+</div>
+<div id="example-2-nonlinear-system" class="section level2">
+<h2>Example 2: Nonlinear System</h2>
+<p>Consider the following system of equations (from chapter 1, exercise 6 of <span class="citation">(Garcia and Zangwill <a href="#ref-garciapathways" role="doc-biblioref">1981</a>)</span>):
+<span class="math display" id="eq:nonlinEx1">\[\begin{align}
+F(x_1, x_2) = 
+\left[ \begin{array}
+{l}
+e^{2 x_1} - x^{2}_{2} + 3   \\
+4x_{2}e^{2 x_1} - x^{3}_{2}   \\
+\end{array} \right]
+ = \left[ \begin{array} {l} 
+0 \\
+0 \\
+\end{array} \right] \tag{3} \\
+(x_1, x_2) \in \mathbb{R}^2 \\
+F: \mathbb{R}^2 \rightarrow \mathbb{R}^2
+\end{align}\]</span></p>
+<p>Again, readers should verify that the solutions to this system of equations are <span class="math inline">\((x1, x2) = (0, -2) \, \&amp; \, (x1, x2) = (0, 2)\)</span>.</p>
+<p>We now introduce the homotopy parameter <span class="math inline">\(t\)</span>, and define <span class="math inline">\(H(x_1, x_2, t)\)</span> as:</p>
+<p><span class="math display" id="eq:HfuncNonlin1">\[\begin{align}
+H(x_1, x_2, t) = F(x_1, x_2) - (1-t)F(0, 0) \tag{4}
+\end{align}\]</span></p>
+<p>The formulation in <a href="#eq:HfuncNonlin1">(4)</a> is called the <em>Newton Homotopy</em> <span class="citation">(Garcia and Zangwill <a href="#ref-garciapathways" role="doc-biblioref">1981</a>)</span>. A distinct advantage of this formulation, is that at <span class="math inline">\(t=0\)</span>, it is easy to see that the solution to the system is <span class="math inline">\((0, 0)\)</span>.</p>
+<p>For any <span class="math inline">\(t\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, <span class="math inline">\(H(x_1, x_2, t)\)</span> becomes:
+<span class="math display" id="eq:HfuncNonlin2">\[\begin{align}
+\left[ \begin{array}
+{l}
+e^{2 x_1} - x^{2}_{2} + 4t - 1   \\
+4x_{2}e^{2 x_1} - x^{3}_{2}   \\
+\end{array} \right]
+ = \left[ \begin{array} {l} 
+0 \\
+0 \\
+\end{array} \right] 
+\tag{5}
+\end{align}\]</span></p>
+<p>We now attempt to find <span class="math inline">\((x_1, x_2)\)</span> as functions of <span class="math inline">\(t\)</span>. From <a href="#eq:HfuncNonlin2">(5)</a>, we have:
+<span class="math display" id="eq:x2Sol">\[\begin{align}
+  x_{2}^{3} = 4x_{2}e^{2 x_1} \nonumber \\
+  x_2 = 0 \,\,\,\,\, OR \,\,\,\,\, x_{2} = \pm 2e^{x_1} \tag{6}
+\end{align}\]</span></p>
+<p>When <span class="math inline">\(x_2 = 0\)</span>, putting this back in <a href="#eq:HfuncNonlin2">(5)</a> we get:
+<span class="math display" id="eq:x1Sol1">\[\begin{align}
+  e^{2 x_1} + 4t - 1 = 0 \nonumber \\
+  \implies x_1 = \frac{1}{2} log(1-4t) \tag{7} \\
+  where \,\,\,\, 0 \le t \le 1/4
+\end{align}\]</span></p>
+<p>When <span class="math inline">\(x_2 = \pm 2e^{x_1}\)</span>, putting this back in <a href="#eq:HfuncNonlin2">(5)</a> we get:
+<span class="math display" id="eq:x1Sol2">\[\begin{align}
+  -3e^{2 x_1} + 4t - 1 = 0 \nonumber \\
+  \implies x_1 = \frac{1}{2} log\left(\frac{4t-1}{3}\right) \tag{8} \\
+  where \,\,\,\, 1/4 &lt; t \le 1
+\end{align}\]</span></p>
+<p>Combining all the findings from <a href="#eq:x2Sol">(6)</a>, <a href="#eq:x1Sol1">(7)</a> and <a href="#eq:x1Sol2">(8)</a>, we get:
+<span class="math display" id="eq:x2t" id="eq:x1t">\[\begin{align}
+  x_1(t) = \begin{cases}
+        \frac{1}{2} log(1-4t) &amp; \text{for } 0\le t \le 1/4\\
+        \frac{1}{2} log\left(\frac{4t-1}{3}\right) &amp; \text{for } 1/4 &lt; t \leq 1
+        \end{cases} \tag{9} \\
+    x_1(t) = \begin{cases}
+        0 &amp; \text{for } 0\le t \le 1/4\\
+        \pm 2 \sqrt{\left(\frac{4t-1}{3}\right)} &amp; \text{for } 1/4 &lt; t \leq 1
+        \end{cases} \tag{10}
+\end{align}\]</span></p>
+<p>Which gives us the solution to the system of equations in <a href="#eq:nonlinEx1">(3)</a> at <span class="math inline">\(t = 1\)</span>. However, note that the functions <span class="math inline">\(x_1(t), x_2(t)\)</span> are non-differentiable, which disqualifies them from being solution paths <span class="citation">(Garcia and Zangwill <a href="#ref-garciapathways" role="doc-biblioref">1981</a>)</span>. This is evident in the plots shown below:
+<img src="../../post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="../../post/2020-04-26-the-homotopy-principle-simple-examples_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>One could always try another formulation for <span class="math inline">\(H(x_1, x_2, t)\)</span> which leads to well defined paths to the desired solution from the known solution (i.e. the solution to <span class="math inline">\(H(x_1, x_2, 0)\)</span>). That is left as an exercise to the reader.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-Bajari2010">
+<p>Bajari, Patrick, Han Hong, John Krainer, and Denis Nekipelov. 2010. “Computing Equilibria in Static Games of Incomplete Information Using the All-Solution Homotopy.” <em>Operations Research</em> 58 (4-part 2).</p>
+</div>
+<div id="ref-Borkovsky2010">
+<p>Borkovsky, Ron N., Ulrich Doraszelski, and Yaroslav Kryukov. 2010. “A user’s guide to solving dynamic stochastic games using the homotopy method.” <em>Operations Research</em> 58 (4 PART 2): 1116–32. <a href="https://doi.org/10.1287/opre.1100.0843">https://doi.org/10.1287/opre.1100.0843</a>.</p>
+</div>
+<div id="ref-garciapathways">
+<p>Garcia, C B, and W I Zangwill. 1981. “Pathways to solutions, fixed points, and equilibria. 1981.” Prentice-Hall, Englewood Cliffs, NJ.</p>
+</div>
+</div>
+</div>
+
+    </div>
+
+    
+
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="../../tags/fixed-points/">Fixed Points</a>
+  
+  <a class="badge badge-light" href="../../tags/equilibria/">Equilibria</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="../../authors/admin/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="../../">Journeyman Modeler</a></h5>
+      <h6 class="card-subtitle">Data Scientist</h6>
+      <p class="card-text" itemprop="description">I&rsquo;m interested in learning models that lie at the intersection of Economics, Statistics and Computer Science</p>
+      <ul class="network-icon" aria-hidden="true">
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="../../js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="../../js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

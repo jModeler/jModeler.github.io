@@ -3,8 +3,48 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/categories/bayesian-nonparametrics/</loc>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
-    <lastmod>2020-04-26T21:59:54-04:00</lastmod>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/</loc>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/dirichlet-distribution/</loc>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/gamma-distribution/</loc>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-05-31T07:44:22-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -21,24 +61,7 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2020-04-26T21:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2020-04-26T21:59:54-04:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/categories/scientific-computing/</loc>
-    <lastmod>2020-04-26T21:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-04-26T21:59:54-04:00</lastmod>
     <priority>0</priority>
   </url>
@@ -46,12 +69,6 @@
   <url>
     <loc>/post/the-homotopy-principle-simple-examples/</loc>
     <lastmod>2020-04-26T21:59:54-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/bayesian-nonparametrics/</loc>
-    <lastmod>2019-09-07T09:57:50-04:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -69,12 +86,6 @@
   <url>
     <loc>/post/deriving-the-beta-distribution-from-gamma-distributed-variables/</loc>
     <lastmod>2019-09-07T09:57:50-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/gamma-distribution/</loc>
-    <lastmod>2019-09-07T09:57:50-04:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

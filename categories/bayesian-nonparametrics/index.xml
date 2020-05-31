@@ -115,6 +115,162 @@ Which establishes the following:&lt;/p&gt;
     </item>
     
     <item>
+      <title>Dirichlet Distribution from Gamma Distribution: Simple Examples</title>
+      <link>/post/dirichlet-distribution-from-gamma-distribution-simple-examples/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/dirichlet-distribution-from-gamma-distribution-simple-examples/</guid>
+      <description>
+
+
+&lt;p&gt;This post is a continuation of the post that constructs a &lt;a href=&#34;https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/&#34;&gt;Dirichlet distribution from Gamma distributed variables&lt;/a&gt;. I now provide an empirical example of this construction for a simple case. In all of the work that follows, Unless otherwise specified, the rate parameter for the Gamma distribution is 1.&lt;/p&gt;
+&lt;p&gt;I follow the steps below to do this:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Generate data from a gamma distribution&lt;/li&gt;
+&lt;li&gt;Apply the appropriate transformation to these&lt;/li&gt;
+&lt;li&gt;Check the distribution of the transformed variables&lt;/li&gt;
+&lt;li&gt;Compare against data generated from a Dirichlet distribution with appropriate parameters&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div id=&#34;preliminaries&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Preliminaries&lt;/h1&gt;
+&lt;p&gt;I write a function that generates IID draws from &lt;span class=&#34;math inline&#34;&gt;\(d\)&lt;/span&gt; different gamma distributions, all with rate parameter = 1. Note that this is purely a utility function with no sanity checks on the input.
+In the code below, the parameter &lt;span class=&#34;math inline&#34;&gt;\(d\)&lt;/span&gt; is implicit, in that it is the length of the vector of shape parameters, &lt;span class=&#34;math inline&#34;&gt;\(alpha\)&lt;/span&gt;, which is being sent as an input (all the elements in the vector &lt;span class=&#34;math inline&#34;&gt;\(alpha\)&lt;/span&gt; must be &lt;span class=&#34;math inline&#34;&gt;\(&amp;gt;0\)&lt;/span&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Function to generate n random draws of dimension from d different gamma distributions
+
+mv_gamma &amp;lt;- function(rgamma, n, alpha)
+{
+  # rgamma: the base r function to generate random draws from a univariate gamma distribution
+  # n: number of draws needed
+  # alpha: vector of shape parameters
+  
+  # generate random draws for each dimension, then put them together into an array
+  # using sapply for this
+  
+  mvg_draws &amp;lt;- sapply(alpha, function(x) rgamma(n, x))
+  
+  #return this value
+  return(mvg_draws)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I create another utility function to transform the output from the previous function to construct Dirichlet distributed variables.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Function to construct dirichlet distributed variables from gamma distributed variables
+
+construct_dirichlet &amp;lt;- function(mvg_draws)
+{
+  # mvg_draws: output from the mv_gamma function. Typically an n x d matrix.  
+  
+  # Transform the columns of mvg_draws appropriately:
+  # Divide each row with its sum
+  
+  const_dirichlet &amp;lt;- mvg_draws/rowSums(mvg_draws)
+  
+  #return this value
+  return(const_dirichlet)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, a utility function to compare the distrbution of the constructed and actual random variables. Note that I use the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{cramer.test()}\)&lt;/span&gt; function from the &lt;a href=&#34;https://cran.r-project.org/package=cramer&#34;&gt;cramer&lt;/a&gt; package to compare the multivariate draws.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;compare_distributions &amp;lt;- function(const_dirichlet, actual_dirichlet) {
+  # const_dirichlet: n x d matrix containing the constructed dirichlet random draws
+  # actual_dirichlet: n x d matrix containing the actual dirichlet random draws
+  
+  # get the cramer test result
+  compare &amp;lt;- cramer.test(const_dirichlet, actual_dirichlet)
+  
+  # check the result of this hypothesis test
+  if(compare$result==0) {
+    cat(&amp;#39;Unable to reject hypothesis of equal distributions&amp;#39;)
+  } else {
+    cat(&amp;#39;Hypothesis of equal distributions should not be accepted&amp;#39;)
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lastly, another utility function to compare (via plot) the distribution of the constructed and actual random variables. I use the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{rdirichlet()}\)&lt;/span&gt; function from the &lt;a href=&#34;https://cran.r-project.org/package=cramer&#34;&gt;MCMCpack&lt;/a&gt; package to generate draws from the dirichlet distribution.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Function to plot densities of the constructed and actual dirichlet distribution
+
+plot_compare &amp;lt;- function(const_dirichlet, actual_dirichlet, d)
+{
+  # const_dirichlet: n x d matrix containing the constructed dirichlet random draws
+  # actual_dirichlet: n x d matrix containing the actual dirichlet random draws
+  # d: the column id/component of the draw needed from both constucted and actual for comparison
+
+  # Get the number of data points
+  n &amp;lt;- nrow(const_dirichlet)
+  
+  # Get the draws in the dimension or column whose distribution need to be compared to the actual
+  dcol &amp;lt;- const_dirichlet[,d]
+  
+  # Get the draws in the dimension or column, from the actual draws
+  dcol_actual &amp;lt;- actual_dirichlet[,d]
+  
+  #create a data.frame of these values
+  plot_data &amp;lt;- data.frame(draws = c(dcol, dcol_actual), type = rep(c(&amp;#39;constructed&amp;#39;, &amp;#39;actual&amp;#39;)), each = n)
+  
+  #plot this function
+  ggplot(data = plot_data, aes(x = draws, color = type)) + geom_density() + xlab(&amp;#39;draws&amp;#39;) + ylab(&amp;#39;density&amp;#39;)
+  
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dimensional-case&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;3 Dimensional Case&lt;/h1&gt;
+&lt;p&gt;Let’s use the functions we just created. I follow the steps outlined in the introduction of this post.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(cramer)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: boot&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;suppressPackageStartupMessages(library(MCMCpack))
+
+# number of draws
+n &amp;lt;- 1000
+
+# multivariate shapre parameter
+alpha &amp;lt;- c(1,2,3)
+
+# get 3D IID gamma density draws
+set.seed(100)
+mvg_draws &amp;lt;- mv_gamma(rgamma, n, alpha)
+
+# get the dirichlet draws from construction
+const_dirichlet &amp;lt;- construct_dirichlet(mvg_draws)
+
+# get the dirichlet draws from the actual distribution
+set.seed(100)
+actual_dirichlet &amp;lt;- rdirichlet(n, alpha)
+
+# check if the draws come from the same underlying distribution
+compare_distributions(const_dirichlet, actual_dirichlet)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Unable to reject hypothesis of equal distributions&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As can be seen above, the null hypothesis that the underlying distributions are the same cannot be rejected.
+Let’s also look at the empirical densities of each of the columns of the constructed and actual dirichlet distribution draws.&lt;/p&gt;
+&lt;p&gt;Dimension 1:
+&lt;img src=&#34;../../post/2020-05-31-dirichlet-distribution-from-gamma-distribution-simple-examples.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Dimension 2:
+&lt;img src=&#34;../../post/2020-05-31-dirichlet-distribution-from-gamma-distribution-simple-examples.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Dimension 3:
+&lt;img src=&#34;../../post/2020-05-31-dirichlet-distribution-from-gamma-distribution-simple-examples.en_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;These density plots look somewhat similar. When we increase the number of draws generated from both methods, these plots almost overlap:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# number of draws
+n &amp;lt;- 100000
+
+# multivariate shapre parameter
+alpha &amp;lt;- c(1,2,3)
+
+# get 3D IID gamma density draws
+set.seed(100)
+mvg_draws &amp;lt;- mv_gamma(rgamma, n, alpha)
+
+# get the dirichlet draws from construction
+const_dirichlet &amp;lt;- construct_dirichlet(mvg_draws)
+
+# get the dirichlet draws from the actual distribution
+set.seed(100)
+actual_dirichlet &amp;lt;- rdirichlet(n, alpha)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dimension 1:
+&lt;img src=&#34;../../post/2020-05-31-dirichlet-distribution-from-gamma-distribution-simple-examples.en_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Dimension 2:
+&lt;img src=&#34;../../post/2020-05-31-dirichlet-distribution-from-gamma-distribution-simple-examples.en_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Dimension 3:
+&lt;img src=&#34;../../post/2020-05-31-dirichlet-distribution-from-gamma-distribution-simple-examples.en_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Comparing the draws for different values of &lt;span class=&#34;math inline&#34;&gt;\(d\)&lt;/span&gt; (i.e. different lengths of the &lt;span class=&#34;math inline&#34;&gt;\(alpha\)&lt;/span&gt; vector), is left as an exercise to the reader. The functions above can be re-used for different values of &lt;span class=&#34;math inline&#34;&gt;\(d\)&lt;/span&gt;, but must be modified accordingly to include sanity checks for inappropriate input values and edge cases, via &lt;a href=&#34;http://r-pkgs.had.co.nz/tests.html&#34;&gt;unit testing&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Deriving the Beta Distribution from Gamma Distributed Variables</title>
       <link>/post/deriving-the-beta-distribution-from-gamma-distributed-variables/</link>
       <pubDate>Sat, 07 Sep 2019 00:00:00 +0000</pubDate>

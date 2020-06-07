@@ -6,10 +6,59 @@
     <description>Recent content in Posts on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>A Useful Property of the Dirichlet Distribution</title>
+      <link>/post/a-useful-property-of-the-dirichlet-distribution/</link>
+      <pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/a-useful-property-of-the-dirichlet-distribution/</guid>
+      <description>
+
+
+&lt;p&gt;This post is a continuation of the post that constructs a &lt;a href=&#34;https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/&#34;&gt;Dirichlet distribution from Gamma distributed variables&lt;/a&gt;. We use the same parameterization of the Gamma Distribution as before, and set the rate parameter &lt;span class=&#34;math inline&#34;&gt;\(=1\)&lt;/span&gt; unless otherwise specified. In this post I prove that the following property holds:&lt;/p&gt;
+&lt;p&gt;If &lt;span class=&#34;math inline&#34;&gt;\(U = (U_1,\dots,U_{i},U_{i+1}, \dots, U_{N}) \sim Dir(\alpha_1,\dots,\alpha_i,\alpha_{i+1},\dots, \alpha_N)\)&lt;/span&gt; then &lt;span class=&#34;math inline&#34;&gt;\(U&amp;#39; = (U_1,U_2,\dots,U_{i}+U_{i+1}, \dots, U_{N}) \sim Dir(\alpha_1,\alpha_2,\dots,\alpha_i+\alpha_{i+1},\dots, \alpha_N)\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In general, &lt;span class=&#34;math inline&#34;&gt;\(U&amp;#39;&amp;#39; = (\sum\limits_{i=1}^{k_1} U_i, \sum\limits_{i=k_1+1}^{k_2} U_i, \dots, \sum\limits_{i=k_j+1}^{N} U_i ) \sim Dir(\sum\limits_{i=1}^{k_1} \alpha_i, \sum\limits_{i=k_1+1}^{k_2} \alpha_i, \dots, \sum\limits_{i=k_j+1}^{N} \alpha_i )\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;I prove the first part of this property here. The rest follows by simply extending the proof. The strategy here is to construct IID Gamma distributed variables with appropriate parameters, and then derive the distribution of &lt;span class=&#34;math inline&#34;&gt;\(U&amp;#39;\)&lt;/span&gt; using the results from the &lt;a href=&#34;https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/&#34;&gt;previous post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Assume &lt;span class=&#34;math inline&#34;&gt;\(Z_i\)&lt;/span&gt;’s are IID &lt;span class=&#34;math inline&#34;&gt;\(\sim Gamma(\alpha_i,1)\)&lt;/span&gt;. From the &lt;a href=&#34;https://jmodeler.github.io/post/additive-property-of-the-gamma-distribution/&#34;&gt;additive property of the Gamma distribution&lt;/a&gt;, I have &lt;span class=&#34;math inline&#34;&gt;\(Z_{i,i+1} = Z_i + Z_{i+1} \sim Gamma(\alpha_i+\alpha_{i+1},1)\)&lt;/span&gt;. By definition, &lt;span class=&#34;math inline&#34;&gt;\(Z_{i,i+1}\)&lt;/span&gt; is independent of &lt;span class=&#34;math inline&#34;&gt;\(Z_j\)&lt;/span&gt;’s for &lt;span class=&#34;math inline&#34;&gt;\(1 \le j \le N, j \neq i, i+1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;I now define &lt;span class=&#34;math inline&#34;&gt;\(U&amp;#39; = (U_1,U_2,\dots,U_{i}+U_{i+1}, \dots, U_{N}) = (U_1,U_2,\dots,U_{i,i+1}, \dots, U_{N})\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(U_j = \frac{Z_j}{\sum\limits_{j\neq i, i+1}^{N} Z_j + Z_{i,i+1}}\)&lt;/span&gt;. From &lt;a href=&#34;https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/&#34;&gt;here&lt;/a&gt;, it follows that &lt;span class=&#34;math inline&#34;&gt;\(U&amp;#39; \sim Dir(\alpha_1,\alpha_2,\dots,\alpha_i+\alpha_{i+1},\dots, \alpha_N)\)&lt;/span&gt;. The second part of theorem  follows from similar reasoning.&lt;/p&gt;
+&lt;p&gt;The result above can be used to get the marginal distributions of the &lt;span class=&#34;math inline&#34;&gt;\(U_i\)&lt;/span&gt;’s, where &lt;span class=&#34;math inline&#34;&gt;\(U = (U_1,\dots,U_i,\dots,U_N)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Define &lt;span class=&#34;math inline&#34;&gt;\(U&amp;#39; = (U_i, \sum\limits_{j \neq i}^{N} U_j)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;From the result above, this is distributed &lt;span class=&#34;math inline&#34;&gt;\(Dir(\alpha_i, \sum\limits_{j \neq i}^{N} \alpha_j) = Beta(\alpha_i, \sum\limits_{j \neq i}^{N} \alpha_j)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Since &lt;span class=&#34;math inline&#34;&gt;\(\sum\limits_{j \neq i}^{N} U_j = 1 - U_i\)&lt;/span&gt;, the density function can be expressed purely as a function of &lt;span class=&#34;math inline&#34;&gt;\(U_i\)&lt;/span&gt;, which is the marginal distribution of &lt;span class=&#34;math inline&#34;&gt;\(U_i\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Formally:&lt;/p&gt;
+&lt;p&gt;If &lt;span class=&#34;math inline&#34;&gt;\(U = (U_1, \dots, U_{N}) \sim Dir(\alpha_1,\dots, \alpha_N)\)&lt;/span&gt; then &lt;span class=&#34;math inline&#34;&gt;\(U_i \sim Beta(\alpha_i, \sum\limits_{j \neq i}^{N} \alpha_j)\)&lt;/span&gt;&lt;/p&gt;
+&lt;div id=&#34;the-complete-neutral-property-of-the-dirichlet-distribution&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The Complete Neutral Property of the Dirichlet Distribution&lt;/h2&gt;
+&lt;p&gt;A somewhat related property is also discussed here:&lt;/p&gt;
+&lt;p&gt;If &lt;span class=&#34;math inline&#34;&gt;\(U = (U_1, \dots, U_{N}) \sim Dir(\alpha_1,\dots, \alpha_N)\)&lt;/span&gt; and when &lt;span class=&#34;math inline&#34;&gt;\(k &amp;lt; N\)&lt;/span&gt;, then&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\frac{1}{(1-\sum\limits_{j = k+1}^{N} U_j)}(U_1,\dots,U_k) \sim Dir(\alpha_1,\dots,\alpha_k)\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Here, we note the term that divides each component of the vector &lt;span class=&#34;math inline&#34;&gt;\((U_1,\dots,U_k)\)&lt;/span&gt; is &lt;span class=&#34;math inline&#34;&gt;\((1-\sum\limits_{j = k+1}^{N} U_j)\)&lt;/span&gt;, which is nothing but &lt;span class=&#34;math inline&#34;&gt;\(\sum\limits_{j = 1}^{k} U_j\)&lt;/span&gt;, since &lt;span class=&#34;math inline&#34;&gt;\(\sum\limits_{j = 1}^{N} U_j = 1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Assume &lt;span class=&#34;math inline&#34;&gt;\(\{Z_i\}_{i=1}^{N}\)&lt;/span&gt;, are &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; IID Gamma distributed random variables, with &lt;span class=&#34;math inline&#34;&gt;\(Z_i \sim Gamma(\alpha_i,1) \, \forall \, i=1,\dots,N\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;In the post on &lt;a href=&#34;https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/&#34;&gt;constructing a dirichlet distribution from Gamma distributed variables&lt;/a&gt;, it was shown that when &lt;span class=&#34;math inline&#34;&gt;\(U_i = Z_i/(\sum\limits_{j = 1}^{N} Z_j) \, \forall \, i=1,\dots,N\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(U = (U_1, \dots, U_{N}) \sim Dir(\alpha_1,\dots, \alpha_N)\)&lt;/span&gt;. With this construction, I now have:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:gamconstr1&#34;&gt;\[\begin{align}
+X_i =  \frac{U_i}{1-\sum\limits_{j = k+1}^{N} U_j} = \frac{U_i}{\sum\limits_{j = 1}^{k} U_j} \, \forall \, i=1,\dots,k  \tag{1} 
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Since &lt;span class=&#34;math inline&#34;&gt;\(U_i = Z_i/(\sum\limits_{j = 1}^{N} Z_j) \, \forall \, i=1,\dots,N\)&lt;/span&gt;, I put this in &lt;a href=&#34;#eq:gamconstr1&#34;&gt;(1)&lt;/a&gt; to get:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34; id=&#34;eq:gamconstr2&#34;&gt;\[\begin{align}
+X_i = \frac{U_i}{\sum\limits_{j = 1}^{k} U_j} = \frac{Z_i}{\sum\limits_{j = 1}^{k} Z_j}  \, \forall \, i=1,\dots,k  \tag{2}
+\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;From the post on &lt;a href=&#34;https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/&#34;&gt;constructing a dirichlet distribution from Gamma distributed variables&lt;/a&gt;, we know that &lt;span class=&#34;math inline&#34;&gt;\(X = (X_1,\dots, X_k) \sim Dir(\alpha_1,\dots,\alpha_k)\)&lt;/span&gt;, which completes the proof. This property of the Dirichlet Distribution is also called the &lt;span class=&#34;math inline&#34;&gt;\(\textit{complete neutral property}\)&lt;/span&gt; &lt;span class=&#34;citation&#34;&gt;(Albert and Denis &lt;a href=&#34;#ref-albert2011dirichlet&#34; role=&#34;doc-biblioref&#34;&gt;2011&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-albert2011dirichlet&#34;&gt;
+&lt;p&gt;Albert, Isabelle, and Jean-Baptiste Denis. 2011. “Dirichlet and multinomial distributions: properties and uses in JAGS.” &lt;em&gt;Analysis&lt;/em&gt; 31: 1141–55.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Deriving the Dirichlet Distribution from Gamma Distributed Variables</title>

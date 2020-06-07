@@ -6,15 +6,24 @@
     <description>Recent content in Tags on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Beta Distribution</title>
+      <link>/tags/beta-distribution/</link>
+      <pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/beta-distribution/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Dirichlet Distribution</title>
       <link>/tags/dirichlet-distribution/</link>
-      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/dirichlet-distribution/</guid>
       <description></description>
@@ -23,7 +32,7 @@
     <item>
       <title>Gamma Distribution</title>
       <link>/tags/gamma-distribution/</link>
-      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/gamma-distribution/</guid>
       <description></description>
@@ -53,15 +62,6 @@
       <pubDate>Sat, 07 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/bayesian-nonparametrics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Beta Distribution</title>
-      <link>/tags/beta-distribution/</link>
-      <pubDate>Sat, 07 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/beta-distribution/</guid>
       <description></description>
     </item>
     

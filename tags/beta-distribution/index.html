@@ -118,7 +118,7 @@
   <meta property="og:description" content="Data Scientist"><meta property="og:image" content="/img/icon-192.png">
   <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2019-09-07T00:00:00&#43;00:00">
+  <meta property="og:updated_time" content="2020-06-07T00:00:00&#43;00:00">
   
 
   
@@ -309,6 +309,17 @@
   
 
   
+  
+  <div>
+    <h2><a href="../../post/a-useful-property-of-the-dirichlet-distribution/">A Useful Property of the Dirichlet Distribution</a></h2>
+    <div class="article-style">
+      
+      This post is a continuation of the post that constructs a Dirichlet distribution from Gamma distributed variables. We use the same parameterization of the Gamma Distribution as before, and set the rate parameter \(=1\) unless otherwise specified. In this post I prove that the following property holds:
+If \(U = (U_1,\dots,U_{i},U_{i+1}, \dots, U_{N}) \sim Dir(\alpha_1,\dots,\alpha_i,\alpha_{i+1},\dots, \alpha_N)\) then \(U&#39; = (U_1,U_2,\dots,U_{i}+U_{i+1}, \dots, U_{N}) \sim Dir(\alpha_1,\alpha_2,\dots,\alpha_i+\alpha_{i+1},\dots, \alpha_N)\)
+In general, \(U&#39;&#39; = (\sum\limits_{i=1}^{k_1} U_i, \sum\limits_{i=k_1+1}^{k_2} U_i, \dots, \sum\limits_{i=k_j+1}^{N} U_i ) \sim Dir(\sum\limits_{i=1}^{k_1} \alpha_i, \sum\limits_{i=k_1+1}^{k_2} \alpha_i, \dots, \sum\limits_{i=k_j+1}^{N} \alpha_i )\)
+      
+    </div>
+  </div>
   
   <div>
     <h2><a href="../../post/deriving-the-beta-distribution-from-gamma-distributed-variables/">Deriving the Beta Distribution from Gamma Distributed Variables</a></h2>

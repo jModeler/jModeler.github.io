@@ -6,10 +6,101 @@
     <description>Recent content on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 May 2021 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Explaining the Dirichlet Draws Function</title>
+      <link>/post/2021-05-02-explaining-the-dirichlet-draws-function/</link>
+      <pubDate>Sun, 02 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-05-02-explaining-the-dirichlet-draws-function/</guid>
+      <description>
+&lt;script src=&#34;./rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This post is a continuation of the post that discusses the &lt;a href=&#34;https://jmodeler.github.io/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&#34;&gt;dirichlet draws function&lt;/a&gt;. In this post I explain the function step by step, starting with the header files used:&lt;/p&gt;
+&lt;div id=&#34;step-1-headers-needed&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 1: Headers Needed&lt;/h2&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;#include &amp;lt;RcppArmadillo.h&amp;gt;
+// [[Rcpp::depends(RcppArmadillo)]]
+using namespace Rcpp;
+
+// [[Rcpp::export]]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As explained very well by &lt;a href=&#34;https://archive.fo/LwLVs&#34;&gt;Matt Denny&lt;/a&gt; &lt;a href=&#34;https://archive.fo/wCMHo&#34;&gt;here&lt;/a&gt;, this part of the code lets the compiler know where to look for the constructs being used in the body of the function. In addition, the “&lt;span class=&#34;math inline&#34;&gt;\(\texttt{//[[Rcpp::export]]}\)&lt;/span&gt;” statement makes the compiled function available for use in R.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-2-function-definition&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 2: Function Definition&lt;/h2&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
+  // get n random draws from the dirichlet distribution
+  // n: number of draws needed
+  // concentration_parameters: self explanatory, needed parameters for the dirichlet
+  // distribution
+  // create a variable to store the length of the concentration_parameters vector&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here, I’m creating the rdirichlet_cpp() function, that returns an armadillo matrix object, and takes an integer “n”, and an armadillo vector named “concentration_parameters”. These variables are described in a little more detail in the comments of the function. “n” contains the number of draws needed from the dirichlet distribution, while “concentration_parameters” is a vector containing values &lt;span class=&#34;math inline&#34;&gt;\(&amp;gt;0\)&lt;/span&gt;, described in detail &lt;a href=&#34;https://en.wikipedia.org/wiki/Dirichlet_distribution#The_concentration_parameter&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-3-function-body-variable-declarations&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 3: Function Body: Variable Declarations&lt;/h2&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;int k = concentration_parameters.n_elem;
+  // next, create a matrix that will store the gamma draws
+  // each row in this matrix will be a draw from the gamma distribution
+  arma::mat gamma_draws(n, k, arma::fill::zeros);
+  // create a matrix that stores the dirichlet distribution draws
+  arma::mat dirichlet_draws(n, k, arma::fill::zeros);
+  // create temporary variables that will store values in the loops
+  // vector to store temporary gamma draws
+  NumericVector temp_gamma(n);
+  // variable to store the column sums of the gamma_draws matrix
+  arma::vec temp_sum;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I create the following variables here:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;k: this contains the length of the concentration_parameters variable.&lt;/li&gt;
+&lt;li&gt;gamma_draws: this is an armadillo matrix of size &lt;span class=&#34;math inline&#34;&gt;\(n \,\, \times \,\, k\)&lt;/span&gt;, that will store draws from Rcpp’s &lt;span class=&#34;math inline&#34;&gt;\(\texttt{rgamma()}\)&lt;/span&gt; function. All of its elements are currently initialized to &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;dirichlet_draws: this is an armadillo matrix of size &lt;span class=&#34;math inline&#34;&gt;\(n \,\, \times \,\, k\)&lt;/span&gt;, that will store draws from the dirichlet distribution needed. All of its elements are currently initialized to &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;temp_gamma: this is an Rcpp &lt;span class=&#34;math inline&#34;&gt;\(\texttt{NumericVector}\)&lt;/span&gt;, that temporarily stores draws from the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{rgamma()}\)&lt;/span&gt; function.&lt;/li&gt;
+&lt;li&gt;temp_sum: this is an armadillo vector that contains the row sums of the “filled-out” gamma_draws matrix (will be explained in the next step).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-4-function-body-generate-gamma-draws&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 4: Function Body: Generate Gamma Draws&lt;/h2&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt; // now, loop across the concentration parameters
+  // get gamma draws and fill up the gamma_draws matrix
+  for(int ii = 0; ii &amp;lt; k; ii++) {
+    // get draws from gamma distribution, store in an armadillo vector
+    temp_gamma = rgamma(n, concentration_parameters.at(ii));
+    // temp_gamma is an Rcpp NumericVector, which needs to be converted into an armadillo vector and then
+    // stored in the gamma_draws matrix
+    gamma_draws.col(ii) = as&amp;lt;arma::vec&amp;gt;(temp_gamma);
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In this part of the function body, I do the following:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;I create a for loop to traverse through values &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; to &lt;span class=&#34;math inline&#34;&gt;\((k-1)\)&lt;/span&gt; (via variable &lt;span class=&#34;math inline&#34;&gt;\(ii\)&lt;/span&gt;).&lt;/li&gt;
+&lt;li&gt;I extract the concentration parameter at the &lt;span class=&#34;math inline&#34;&gt;\(ii^{th}\)&lt;/span&gt; location, and get &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;, draws from Rcpp’s &lt;span class=&#34;math inline&#34;&gt;\(\texttt{rgamma()}\)&lt;/span&gt;, function and then store it in temp_gamma.&lt;/li&gt;
+&lt;li&gt;I convert temp_gamma from a &lt;span class=&#34;math inline&#34;&gt;\(\texttt{NumericVector}\)&lt;/span&gt; to an armadillo vector object, and then store it in the &lt;span class=&#34;math inline&#34;&gt;\(ii^{th}\)&lt;/span&gt; column of the gamma_draws matrix. This is how I “fill-out” the gamma_draws matrix.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-5-function-body-generate-dirichlet-draws&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 5: Function Body: Generate Dirichlet Draws&lt;/h2&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;  // now normalize the rows to get the dirichlet draws
+  // element-wise normalization using the each_col() method for a matrix object in armadillo
+  // create the vector of row sums
+  temp_sum = arma::sum(gamma_draws, 1);
+  // now divide each column of gamma_draws with the elements in temp_sum
+  dirichlet_draws = gamma_draws.each_col() / temp_sum;
+  // return this final value
+  return dirichlet_draws;
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here, I now do the following:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;I calculate the row sums of the gamma_draws (which has been “filled-out” in step 4 above) function using the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{sum}\)&lt;/span&gt; function from the armadillo library, storing the results in temp_sum.&lt;/li&gt;
+&lt;li&gt;I now apply a &lt;a href=&#34;http://arma.sourceforge.net/docs.html#each_colrow&#34;&gt;vector operation&lt;/a&gt; to each column of the gamma_draws matrix by the temp_sum vector, where each column of the gamma_draws matrix is divided by each corresponding element of the temp_sum vector. I store the results in the armadillo matrix dirichlet_draws.&lt;/li&gt;
+&lt;li&gt;I return the dirichlet_draws matrix as the final output.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Dirichlet Distribution Draws Function with Rcpp/RcppArmadillo</title>
@@ -85,84 +176,6 @@ calculated_mean &amp;lt;- colMeans(dir_draws)
 # compare both, should be close
 (actual_mean - calculated_mean)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] -2.310840e-05 -1.599541e-05  3.910381e-05&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The calculated mean is close to the actual mean. In a series of future posts, I will explain this function in detail and compare the speed of this function to other similar functions.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Dirichlet Distribution Draws Function with Rcpp/RcppArmadillo</title>
-      <link>/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/</link>
-      <pubDate>Sun, 25 Apr 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/</guid>
-      <description>
-&lt;script src=&#34;./post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-
-
-&lt;p&gt;This post constructs draws from a Dirichlet distribution from a gamma distribution with the help of Rcpp/RcppArmadillo. I’m writing this function to practice using C++ functions as opposed to their R counterparts when I see bottlenecks in my code. As explained in a &lt;a href=&#34;https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/&#34;&gt;previous post&lt;/a&gt;, the strategy to generate random draws from the Dirichlet distribution is as follows:&lt;/p&gt;
-&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;Generate data from a gamma distribution, with the shape parameter given by the concentration parameter of the Dirichlet distribution&lt;/li&gt;
-&lt;li&gt;Once we have all the gamma draws, normalize appropriately to get the Dirichlet distribution draws&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;The code for this, using Rcpp and RcppArmadillo, is given below:&lt;/p&gt;
-&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;#include &amp;lt;RcppArmadillo.h&amp;gt;
-// [[Rcpp::depends(RcppArmadillo)]]
-using namespace Rcpp;
-
-// [[Rcpp::export]]
-arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
-  // get n random draws from the dirichlet distribution
-  // n: number of draws needed
-  // concentration_parameters: self explanatory, needed parameters for the dirichlet
-  // distribution
-  // create a variable to store the length of the concentration_parameters vector
-  int k = concentration_parameters.n_elem;
-  // next, create a matrix that will store the gamma draws
-  // each row in this matrix will be a draw from the gamma distribution
-  arma::mat gamma_draws(n, k, arma::fill::zeros);
-  // create a matrix that stores the dirichlet distribution draws
-  arma::mat dirichlet_draws(n, k, arma::fill::zeros);
-  // create temporary variables that will store values in the loops
-  // vector to store temporary gamma draws
-  NumericVector temp_gamma(n);
-  // variable to store the column sums of the gamma_draws matrix
-  arma::vec temp_sum;
-  // now, loop across the concentration parameters
-  // get gamma draws and fill up the gamma_draws matrix
-  for(int ii = 0; ii &amp;lt; k; ii++) {
-    // get draws from gamma distribution, store in an armadillo vector
-    temp_gamma = rgamma(n, concentration_parameters.at(ii));
-    // temp_gamma is an Rcpp NumericVector, which needs to be converted into an armadillo vector and then
-    // stored in the gamma_draws matrix
-    gamma_draws.col(ii) = as&amp;lt;arma::vec&amp;gt;(temp_gamma);
-  }
-  // now normalize the rows to get the dirichlet draws
-  // element-wise normalization using the each_col() method for a matrix object in armadillo
-  // create the vector of row sums
-  temp_sum = arma::sum(gamma_draws, 1);
-  // now divide each column of gamma_draws with the elements in temp_sum
-  dirichlet_draws = gamma_draws.each_col() / temp_sum;
-  // return this final value
-  return dirichlet_draws;
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Let’s check to see if the mean vector of the draws obtained from this function are in-line with expectations:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(Rcpp)
-library(RcppArmadillo)
-# set number of data points needed
-n &amp;lt;- 100000
-# set dimension of data
-k &amp;lt;- 3
-# generate the concentration parameters 
-alpha &amp;lt;- sample(1:100, k)
-# calculate the actual mean vector
-actual_mean = alpha/sum(alpha)
-# get Dirichlet draws from the C++ function
-dir_draws &amp;lt;- rdirichlet_cpp(n, alpha)
-# get the column means
-calculated_mean &amp;lt;- colMeans(dir_draws)
-# compare both, should be close
-(actual_mean - calculated_mean)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## [1]  1.802505e-04 -1.584761e-04 -2.177442e-05&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The calculated mean is close to the actual mean. In a series of future posts, I will explain this function in detail and compare the speed of this function to other similar functions.&lt;/p&gt;
 </description>
     </item>

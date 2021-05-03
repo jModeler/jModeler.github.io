@@ -28,11 +28,11 @@
   
     
   
-  <meta name="description" content="This post constructs draws from a Dirichlet distribution from a gamma distribution with the help of Rcpp/RcppArmadillo. I’m writing this function to practice using C&#43;&#43; functions as opposed to their R counterparts when I see bottlenecks in my code. As explained in a previous post, the strategy to generate random draws from the Dirichlet distribution is as follows:
-Generate data from a gamma distribution, with the shape parameter given by the concentration parameter of the Dirichlet distributionOnce we have all the gamma draws, normalize appropriately to get the Dirichlet distribution drawsThe code for this, using Rcpp and RcppArmadillo, is given below:">
+  <meta name="description" content="This post is a continuation of the post that discusses the dirichlet draws function. In this post I explain the function step by step, starting with the header files used:
+Step 1: Headers Needed#include &lt;RcppArmadillo.h&gt;// [[Rcpp::depends(RcppArmadillo)]]using namespace Rcpp;// [[Rcpp::export]]As explained very well by Matt Denny here, this part of the code lets the compiler know where to look for the constructs being used in the body of the function.">
 
   
-  <link rel="alternate" hreflang="en-us" href="../../post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/">
+  <link rel="alternate" hreflang="en-us" href="../../post/2021-05-02-explaining-the-dirichlet-draws-function/">
 
   
 
@@ -98,7 +98,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
   <link rel="icon" type="image/png" href="../../img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
 
-  <link rel="canonical" href="../../post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/">
+  <link rel="canonical" href="../../post/2021-05-02-explaining-the-dirichlet-draws-function/">
 
   
   
@@ -110,27 +110,27 @@ Generate data from a gamma distribution, with the shape parameter given by the c
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Journeyman Modeler">
-  <meta property="og:url" content="/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/">
-  <meta property="og:title" content="Dirichlet Distribution Draws Function with Rcpp/RcppArmadillo | Journeyman Modeler">
-  <meta property="og:description" content="This post constructs draws from a Dirichlet distribution from a gamma distribution with the help of Rcpp/RcppArmadillo. I’m writing this function to practice using C&#43;&#43; functions as opposed to their R counterparts when I see bottlenecks in my code. As explained in a previous post, the strategy to generate random draws from the Dirichlet distribution is as follows:
-Generate data from a gamma distribution, with the shape parameter given by the concentration parameter of the Dirichlet distributionOnce we have all the gamma draws, normalize appropriately to get the Dirichlet distribution drawsThe code for this, using Rcpp and RcppArmadillo, is given below:"><meta property="og:image" content="/img/icon-192.png">
+  <meta property="og:url" content="/post/2021-05-02-explaining-the-dirichlet-draws-function/">
+  <meta property="og:title" content="Explaining the Dirichlet Draws Function | Journeyman Modeler">
+  <meta property="og:description" content="This post is a continuation of the post that discusses the dirichlet draws function. In this post I explain the function step by step, starting with the header files used:
+Step 1: Headers Needed#include &lt;RcppArmadillo.h&gt;// [[Rcpp::depends(RcppArmadillo)]]using namespace Rcpp;// [[Rcpp::export]]As explained very well by Matt Denny here, this part of the code lets the compiler know where to look for the constructs being used in the body of the function."><meta property="og:image" content="/img/icon-192.png">
   <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
-  <meta property="article:published_time" content="2021-04-25T00:00:00&#43;00:00">
+  <meta property="article:published_time" content="2021-05-02T00:00:00&#43;00:00">
   
-  <meta property="article:modified_time" content="2021-04-25T21:07:12-04:00">
+  <meta property="article:modified_time" content="2021-05-02T20:11:46-04:00">
   
-
-  
-
 
   
 
 
+  
 
 
 
-  <title>Dirichlet Distribution Draws Function with Rcpp/RcppArmadillo | Journeyman Modeler</title>
+
+
+  <title>Explaining the Dirichlet Draws Function | Journeyman Modeler</title>
 
 </head>
 
@@ -296,7 +296,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
   
   
 <div class="article-container pt-3">
-  <h1 itemprop="name">Dirichlet Distribution Draws Function with Rcpp/RcppArmadillo</h1>
+  <h1 itemprop="name">Explaining the Dirichlet Draws Function</h1>
 
   
 
@@ -305,8 +305,8 @@ Generate data from a gamma distribution, with the shape parameter given by the c
 
 
 
-<meta content="2021-04-25 00:00:00 &#43;0000 UTC" itemprop="datePublished">
-<meta content="2021-04-25 21:07:12 -0400 EDT" itemprop="dateModified">
+<meta content="2021-05-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2021-05-02 20:11:46 -0400 EDT" itemprop="dateModified">
 
 <div class="article-metadata">
 
@@ -321,7 +321,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
           Last updated on
       
     
-    <time>Apr 25, 2021</time>
+    <time>May 2, 2021</time>
   </span>
   
 
@@ -330,7 +330,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    3 min read
+    4 min read
   </span>
   
 
@@ -342,7 +342,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="../../categories/bayesian-nonparametrics/">Bayesian Nonparametrics</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="../../categories/bayesian-nonparametrics/">Bayesian Nonparametrics</a>, <a href="../../categories/scientific-computing/">Scientific Computing</a></span>
   
 
   
@@ -358,7 +358,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&amp;text=Dirichlet%20Distribution%20Draws%20Function%20with%20Rcpp/RcppArmadillo" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/post/2021-05-02-explaining-the-dirichlet-draws-function/&amp;text=Explaining%20the%20Dirichlet%20Draws%20Function" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -371,7 +371,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&amp;t=Dirichlet%20Distribution%20Draws%20Function%20with%20Rcpp/RcppArmadillo" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/post/2021-05-02-explaining-the-dirichlet-draws-function/&amp;t=Explaining%20the%20Dirichlet%20Draws%20Function" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook-f"></i>
         </a>
       </li>
@@ -384,7 +384,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
       
       
       <li>
-        <a href="mailto:?subject=Dirichlet%20Distribution%20Draws%20Function%20with%20Rcpp/RcppArmadillo&amp;body=/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=Explaining%20the%20Dirichlet%20Draws%20Function&amp;body=/post/2021-05-02-explaining-the-dirichlet-draws-function/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -397,7 +397,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&amp;title=Dirichlet%20Distribution%20Draws%20Function%20with%20Rcpp/RcppArmadillo" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/post/2021-05-02-explaining-the-dirichlet-draws-function/&amp;title=Explaining%20the%20Dirichlet%20Draws%20Function" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -410,7 +410,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=Dirichlet%20Distribution%20Draws%20Function%20with%20Rcpp/RcppArmadillo%20/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=Explaining%20the%20Dirichlet%20Draws%20Function%20/post/2021-05-02-explaining-the-dirichlet-draws-function/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -423,7 +423,7 @@ Generate data from a gamma distribution, with the shape parameter given by the c
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&amp;title=Dirichlet%20Distribution%20Draws%20Function%20with%20Rcpp/RcppArmadillo" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/post/2021-05-02-explaining-the-dirichlet-draws-function/&amp;title=Explaining%20the%20Dirichlet%20Draws%20Function" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -463,24 +463,29 @@ Generate data from a gamma distribution, with the shape parameter given by the c
 <script src="../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>This post constructs draws from a Dirichlet distribution from a gamma distribution with the help of Rcpp/RcppArmadillo. I’m writing this function to practice using C++ functions as opposed to their R counterparts when I see bottlenecks in my code. As explained in a <a href="https://jmodeler.github.io/post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/">previous post</a>, the strategy to generate random draws from the Dirichlet distribution is as follows:</p>
-<ol style="list-style-type: decimal">
-<li>Generate data from a gamma distribution, with the shape parameter given by the concentration parameter of the Dirichlet distribution</li>
-<li>Once we have all the gamma draws, normalize appropriately to get the Dirichlet distribution draws</li>
-</ol>
-<p>The code for this, using Rcpp and RcppArmadillo, is given below:</p>
+<p>This post is a continuation of the post that discusses the <a href="https://jmodeler.github.io/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/">dirichlet draws function</a>. In this post I explain the function step by step, starting with the header files used:</p>
+<div id="step-1-headers-needed" class="section level2">
+<h2>Step 1: Headers Needed</h2>
 <pre class="cpp"><code>#include &lt;RcppArmadillo.h&gt;
 // [[Rcpp::depends(RcppArmadillo)]]
 using namespace Rcpp;
 
-// [[Rcpp::export]]
-arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
+// [[Rcpp::export]]</code></pre>
+<p>As explained very well by <a href="https://archive.fo/LwLVs">Matt Denny</a> <a href="https://archive.fo/wCMHo">here</a>, this part of the code lets the compiler know where to look for the constructs being used in the body of the function. In addition, the “<span class="math inline">\(\texttt{//[[Rcpp::export]]}\)</span>” statement makes the compiled function available for use in R.</p>
+</div>
+<div id="step-2-function-definition" class="section level2">
+<h2>Step 2: Function Definition</h2>
+<pre class="cpp"><code>arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
   // get n random draws from the dirichlet distribution
   // n: number of draws needed
   // concentration_parameters: self explanatory, needed parameters for the dirichlet
   // distribution
-  // create a variable to store the length of the concentration_parameters vector
-  int k = concentration_parameters.n_elem;
+  // create a variable to store the length of the concentration_parameters vector</code></pre>
+<p>Here, I’m creating the rdirichlet_cpp() function, that returns an armadillo matrix object, and takes an integer “n”, and an armadillo vector named “concentration_parameters”. These variables are described in a little more detail in the comments of the function. “n” contains the number of draws needed from the dirichlet distribution, while “concentration_parameters” is a vector containing values <span class="math inline">\(&gt;0\)</span>, described in detail <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution#The_concentration_parameter">here</a>.</p>
+</div>
+<div id="step-3-function-body-variable-declarations" class="section level2">
+<h2>Step 3: Function Body: Variable Declarations</h2>
+<pre class="cpp"><code>int k = concentration_parameters.n_elem;
   // next, create a matrix that will store the gamma draws
   // each row in this matrix will be a draw from the gamma distribution
   arma::mat gamma_draws(n, k, arma::fill::zeros);
@@ -490,8 +495,19 @@ arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
   // vector to store temporary gamma draws
   NumericVector temp_gamma(n);
   // variable to store the column sums of the gamma_draws matrix
-  arma::vec temp_sum;
-  // now, loop across the concentration parameters
+  arma::vec temp_sum;</code></pre>
+<p>I create the following variables here:</p>
+<ol style="list-style-type: decimal">
+<li>k: this contains the length of the concentration_parameters variable.</li>
+<li>gamma_draws: this is an armadillo matrix of size <span class="math inline">\(n \,\, \times \,\, k\)</span>, that will store draws from Rcpp’s <span class="math inline">\(\texttt{rgamma()}\)</span> function. All of its elements are currently initialized to <span class="math inline">\(0\)</span>.</li>
+<li>dirichlet_draws: this is an armadillo matrix of size <span class="math inline">\(n \,\, \times \,\, k\)</span>, that will store draws from the dirichlet distribution needed. All of its elements are currently initialized to <span class="math inline">\(0\)</span>.</li>
+<li>temp_gamma: this is an Rcpp <span class="math inline">\(\texttt{NumericVector}\)</span>, that temporarily stores draws from the <span class="math inline">\(\texttt{rgamma()}\)</span> function.</li>
+<li>temp_sum: this is an armadillo vector that contains the row sums of the “filled-out” gamma_draws matrix (will be explained in the next step).</li>
+</ol>
+</div>
+<div id="step-4-function-body-generate-gamma-draws" class="section level2">
+<h2>Step 4: Function Body: Generate Gamma Draws</h2>
+<pre class="cpp"><code> // now, loop across the concentration parameters
   // get gamma draws and fill up the gamma_draws matrix
   for(int ii = 0; ii &lt; k; ii++) {
     // get draws from gamma distribution, store in an armadillo vector
@@ -499,8 +515,17 @@ arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
     // temp_gamma is an Rcpp NumericVector, which needs to be converted into an armadillo vector and then
     // stored in the gamma_draws matrix
     gamma_draws.col(ii) = as&lt;arma::vec&gt;(temp_gamma);
-  }
-  // now normalize the rows to get the dirichlet draws
+  }</code></pre>
+<p>In this part of the function body, I do the following:</p>
+<ol style="list-style-type: decimal">
+<li>I create a for loop to traverse through values <span class="math inline">\(0\)</span> to <span class="math inline">\((k-1)\)</span> (via variable <span class="math inline">\(ii\)</span>).</li>
+<li>I extract the concentration parameter at the <span class="math inline">\(ii^{th}\)</span> location, and get <span class="math inline">\(n\)</span>, draws from Rcpp’s <span class="math inline">\(\texttt{rgamma()}\)</span>, function and then store it in temp_gamma.</li>
+<li>I convert temp_gamma from a <span class="math inline">\(\texttt{NumericVector}\)</span> to an armadillo vector object, and then store it in the <span class="math inline">\(ii^{th}\)</span> column of the gamma_draws matrix. This is how I “fill-out” the gamma_draws matrix.</li>
+</ol>
+</div>
+<div id="step-5-function-body-generate-dirichlet-draws" class="section level2">
+<h2>Step 5: Function Body: Generate Dirichlet Draws</h2>
+<pre class="cpp"><code>  // now normalize the rows to get the dirichlet draws
   // element-wise normalization using the each_col() method for a matrix object in armadillo
   // create the vector of row sums
   temp_sum = arma::sum(gamma_draws, 1);
@@ -508,26 +533,14 @@ arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
   dirichlet_draws = gamma_draws.each_col() / temp_sum;
   // return this final value
   return dirichlet_draws;
-}</code></pre>
-<p>Let’s check to see if the mean vector of the draws obtained from this function are in-line with expectations:</p>
-<pre class="r"><code>library(Rcpp)
-library(RcppArmadillo)
-# set number of data points needed
-n &lt;- 100000
-# set dimension of data
-k &lt;- 3
-# generate the concentration parameters 
-alpha &lt;- sample(1:100, k)
-# calculate the actual mean vector
-actual_mean = alpha/sum(alpha)
-# get Dirichlet draws from the C++ function
-dir_draws &lt;- rdirichlet_cpp(n, alpha)
-# get the column means
-calculated_mean &lt;- colMeans(dir_draws)
-# compare both, should be close
-(actual_mean - calculated_mean)</code></pre>
-<pre><code>## [1] -2.310840e-05 -1.599541e-05  3.910381e-05</code></pre>
-<p>The calculated mean is close to the actual mean. In a series of future posts, I will explain this function in detail and compare the speed of this function to other similar functions.</p>
+  }</code></pre>
+<p>Here, I now do the following:</p>
+<ol style="list-style-type: decimal">
+<li>I calculate the row sums of the gamma_draws (which has been “filled-out” in step 4 above) function using the <span class="math inline">\(\texttt{sum}\)</span> function from the armadillo library, storing the results in temp_sum.</li>
+<li>I now apply a <a href="http://arma.sourceforge.net/docs.html#each_colrow">vector operation</a> to each column of the gamma_draws matrix by the temp_sum vector, where each column of the gamma_draws matrix is divided by each corresponding element of the temp_sum vector. I store the results in the armadillo matrix dirichlet_draws.</li>
+<li>I return the dirichlet_draws matrix as the final output.</li>
+</ol>
+</div>
 
     </div>
 
@@ -541,8 +554,6 @@ calculated_mean &lt;- colMeans(dir_draws)
   <a class="badge badge-light" href="../../tags/bayesian-nonparametrics/">Bayesian Nonparametrics</a>
   
   <a class="badge badge-light" href="../../tags/dirichlet-distribution/">Dirichlet Distribution</a>
-  
-  <a class="badge badge-light" href="../../tags/gamma-distribution/">Gamma Distribution</a>
   
 </div>
 
@@ -595,6 +606,8 @@ calculated_mean &lt;- colMeans(dir_draws)
         <h3>Related</h3>
         <ul>
           
+          <li><a href="../../post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/">Dirichlet Distribution Draws Function with Rcpp/RcppArmadillo</a></li>
+          
           <li><a href="../../post/a-useful-property-of-the-dirichlet-distribution/">A Useful Property of the Dirichlet Distribution</a></li>
           
           <li><a href="../../post/deriving-the-dirichlet-distribution-from-gamma-distributed-variables/">Deriving the Dirichlet Distribution from Gamma Distributed Variables</a></li>
@@ -602,8 +615,6 @@ calculated_mean &lt;- colMeans(dir_draws)
           <li><a href="../../post/dirichlet-distribution-from-gamma-distribution-simple-examples/">Dirichlet Distribution from Gamma Distribution: Simple Examples</a></li>
           
           <li><a href="../../post/deriving-the-beta-distribution-from-gamma-distributed-variables/">Deriving the Beta Distribution from Gamma Distributed Variables</a></li>
-          
-          <li><a href="../../post/additive-property-of-the-gamma-distribution/">Additive Property of the Gamma Distribution</a></li>
           
         </ul>
       </div>

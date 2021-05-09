@@ -31,7 +31,7 @@
   <meta name="description" content="Data Scientist">
 
   
-  <link rel="alternate" hreflang="en-us" href="../../tags/bayesian-nonparametrics/">
+  <link rel="alternate" hreflang="en-us" href="../../categories/programming/">
 
   
 
@@ -91,17 +91,17 @@
   
 
   
-  <link rel="alternate" href="../../tags/bayesian-nonparametrics/index.xml" type="application/rss+xml" title="Journeyman Modeler">
+  <link rel="alternate" href="../../categories/programming/index.xml" type="application/rss+xml" title="Journeyman Modeler">
   
 
   
-  <link rel="alternate" type="application/rss&#43;xml" href="../../tags/bayesian-nonparametrics/index.xml">
+  <link rel="alternate" type="application/rss&#43;xml" href="../../categories/programming/index.xml">
   
 
   <link rel="icon" type="image/png" href="../../img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="../../img/icon-192.png">
 
-  <link rel="canonical" href="../../tags/bayesian-nonparametrics/">
+  <link rel="canonical" href="../../categories/programming/">
 
   
   
@@ -113,8 +113,8 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Journeyman Modeler">
-  <meta property="og:url" content="/tags/bayesian-nonparametrics/">
-  <meta property="og:title" content="Bayesian Nonparametrics | Journeyman Modeler">
+  <meta property="og:url" content="/categories/programming/">
+  <meta property="og:title" content="Programming | Journeyman Modeler">
   <meta property="og:description" content="Data Scientist"><meta property="og:image" content="/img/icon-192.png">
   <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
@@ -130,7 +130,7 @@
 
 
 
-  <title>Bayesian Nonparametrics | Journeyman Modeler</title>
+  <title>Programming | Journeyman Modeler</title>
 
 </head>
 
@@ -296,7 +296,7 @@
     
   
 <div class="universal-wrapper pt-3">
-  <h1 itemprop="name">Bayesian Nonparametrics</h1>
+  <h1 itemprop="name">Programming</h1>
 
   
 
@@ -316,46 +316,6 @@
       
       This post is a continuation of the post that discusses the dirichlet draws function. In this post I compare the speed of this function to other functions that accomplish the same thing in R. First, I revisit the function I wrote in that post:
 #include &lt;RcppArmadillo.h&gt;// [[Rcpp::depends(RcppArmadillo)]]using namespace Rcpp;// [[Rcpp::export]]arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {// get n random draws from the dirichlet distribution// n: number of draws needed// concentration_parameters: self explanatory, needed parameters for the dirichlet// distribution// create a variable to store the length of the concentration_parameters vectorint k = concentration_parameters.
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../../post/2021-05-02-explaining-the-dirichlet-draws-function/">Explaining the Dirichlet Draws Function</a></h2>
-    <div class="article-style">
-      
-      This post is a continuation of the post that discusses the dirichlet draws function. In this post I explain the function step by step, starting with the header files used:
-Step 1: Headers Needed#include &lt;RcppArmadillo.h&gt;// [[Rcpp::depends(RcppArmadillo)]]using namespace Rcpp;// [[Rcpp::export]]As explained very well by Matt Denny here, this part of the code lets the compiler know where to look for the constructs being used in the body of the function.
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../../post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/">Dirichlet Distribution Draws Function with Rcpp/RcppArmadillo</a></h2>
-    <div class="article-style">
-      
-      This post constructs draws from a Dirichlet distribution from a gamma distribution with the help of Rcpp/RcppArmadillo. I’m writing this function to practice using C++ functions as opposed to their R counterparts when I see bottlenecks in my code. As explained in a previous post, the strategy to generate random draws from the Dirichlet distribution is as follows:
-Generate data from a gamma distribution, with the shape parameter given by the concentration parameter of the Dirichlet distributionOnce we have all the gamma draws, normalize appropriately to get the Dirichlet distribution drawsThe code for this, using Rcpp and RcppArmadillo, is given below:
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../../post/deriving-the-beta-distribution-from-gamma-distributed-variables/">Deriving the Beta Distribution from Gamma Distributed Variables</a></h2>
-    <div class="article-style">
-      
-      This post is a continuation of the post that proves the additive property of the Gamma distribution. We use the same parameterization of the Gamma Distribution as before, and set the rate parameter \(=1\) unless otherwise specified. In this post I prove that the following property holds:
-\[\begin{align}\frac{X_i}{\sum_{i=1}^{N} X_i} \sim Beta(\alpha_i, \sum_{j \ne i} \alpha_j) \tag{1} \\Where \, X_i \sim Gamma(\alpha_i, 1), \, \, \{i,j\} \in \{1,2, \dots, N\} \end{align}\]
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="../../post/additive-property-of-the-gamma-distribution/">Additive Property of the Gamma Distribution</a></h2>
-    <div class="article-style">
-      
-      While learning Bayesian Nonparametric methodology, I found a few properties useful in understanding the way Dirichlet Process Priors worked (this is a prior used very commonly in the field (Ferguson (1973), Antoniak (1974))) . This post will be one in a series that describes each of the aforementioned properties and provides simple proofs/examples of the same.
-As the title suggests, we start with the Gamma distribution. We use the shape and rate parameterization of the distribution (as explained here).
       
     </div>
   </div>

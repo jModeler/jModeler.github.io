@@ -6,10 +6,115 @@
     <description>Recent content on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 02 May 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 09 May 2021 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dirichlet Distribution Function: Speed Test</title>
+      <link>/post/2021-05-09-dirichlet-distribution-function-speed-test/</link>
+      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-05-09-dirichlet-distribution-function-speed-test/</guid>
+      <description>
+&lt;script src=&#34;./rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This post is a continuation of the post that discusses the &lt;a href=&#34;https://jmodeler.github.io/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&#34;&gt;dirichlet draws function&lt;/a&gt;. In this post I compare the speed of this function to other functions that accomplish the same thing in R. First, I revisit the function I wrote in that &lt;a href=&#34;https://jmodeler.github.io/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&#34;&gt;post&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;#include &amp;lt;RcppArmadillo.h&amp;gt;
+// [[Rcpp::depends(RcppArmadillo)]]
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
+  // get n random draws from the dirichlet distribution
+  // n: number of draws needed
+  // concentration_parameters: self explanatory, needed parameters for the dirichlet
+  // distribution
+  // create a variable to store the length of the concentration_parameters vector
+  int k = concentration_parameters.n_elem;
+  // next, create a matrix that will store the gamma draws
+  // each row in this matrix will be a draw from the gamma distribution
+  arma::mat gamma_draws(n, k, arma::fill::zeros);
+  // create a matrix that stores the dirichlet distribution draws
+  arma::mat dirichlet_draws(n, k, arma::fill::zeros);
+  // create temporary variables that will store values in the loops
+  // vector to store temporary gamma draws
+  NumericVector temp_gamma(n);
+  // variable to store the column sums of the gamma_draws matrix
+  arma::vec temp_sum;
+  // now, loop across the concentration parameters
+  // get gamma draws and fill up the gamma_draws matrix
+  for(int ii = 0; ii &amp;lt; k; ii++) {
+    // get draws from gamma distribution, store in an armadillo vector
+    temp_gamma = rgamma(n, concentration_parameters.at(ii));
+    // temp_gamma is an Rcpp NumericVector, which needs to be converted into an armadillo vector and then
+    // stored in the gamma_draws matrix
+    gamma_draws.col(ii) = as&amp;lt;arma::vec&amp;gt;(temp_gamma);
+  }
+  // now normalize the rows to get the dirichlet draws
+  // element-wise normalization using the each_col() method for a matrix object in armadillo
+  // create the vector of row sums
+  temp_sum = arma::sum(gamma_draws, 1);
+  // now divide each column of gamma_draws with the elements in temp_sum
+  dirichlet_draws = gamma_draws.each_col() / temp_sum;
+  // return this final value
+  return dirichlet_draws;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There is &lt;a href=&#34;https://archive.fo/tfBe1&#34;&gt;another function written by Matt Denny&lt;/a&gt;, that does the same thing, reproduced here for convenience:&lt;/p&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;// [[Rcpp::depends(RcppArmadillo)]]
+#include &amp;lt;RcppArmadillo.h&amp;gt;
+
+// [[Rcpp::export]]
+arma::mat rdirichlet_cpp_matt(int num_samples,
+                         arma::vec alpha_m) {
+    int distribution_size = alpha_m.n_elem;
+    // each row will be a draw from a Dirichlet
+    arma::mat distribution = arma::zeros(num_samples, distribution_size);
+
+    for (int i = 0; i &amp;lt; num_samples; ++i) {
+        double sum_term = 0;
+        // loop through the distribution and draw Gamma variables
+        for (int j = 0; j &amp;lt; distribution_size; ++j) {
+            double cur = R::rgamma(alpha_m[j],1.0);
+            distribution(i,j) = cur;
+            sum_term += cur;
+        }
+        // now normalize
+        for (int j = 0; j &amp;lt; distribution_size; ++j) {
+            distribution(i,j) = distribution(i,j)/sum_term;
+        }
+    }
+    return(distribution);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note that Matt mostly uses base &lt;span class=&#34;math inline&#34;&gt;\(\texttt{Rcpp}\)&lt;/span&gt; to do the calculations.
+And finally, I’ll also be using the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{rdirichlet}\)&lt;/span&gt; function from the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{DirichletReg}\)&lt;/span&gt; &lt;a href=&#34;https://cran.r-project.org/web/packages/DirichletReg/index.html&#34;&gt;package&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The code chunk below compares the speed of the three functions:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(Rcpp)
+library(RcppArmadillo)
+library(DirichletReg)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: Formula&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(microbenchmark)
+k &amp;lt;- 10 # length of the concentration parameter
+n &amp;lt;- 100000 # number of draws needed
+alpha &amp;lt;- sample(1:1500, k)
+
+
+microbenchmark(rdirichlet(n, alpha), rdirichlet_cpp(n, alpha),
+               rdirichlet_cpp_matt(n, alpha))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Unit: milliseconds
+##                           expr     min      lq     mean  median       uq
+##           rdirichlet(n, alpha) 75.4526 77.2293 78.61526 78.2330 79.18485
+##       rdirichlet_cpp(n, alpha) 87.2701 89.6496 92.22172 91.6164 94.48325
+##  rdirichlet_cpp_matt(n, alpha) 78.4028 80.0083 81.63958 80.9464 82.55565
+##       max neval
+##   85.1076   100
+##  102.1569   100
+##   91.8566   100&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note that while the three functions appear to work at around the same speed, the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{rdirichlet}\)&lt;/span&gt; function (from the &lt;span class=&#34;math inline&#34;&gt;\(\texttt{DirichletReg}\)&lt;/span&gt; package) appears to be marginally faster than the other two, while my function is the slowest. This is great, since it helps me identify the parts of my code that are bottlenecks and speed them up, a topic of a later post.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Explaining the Dirichlet Draws Function</title>

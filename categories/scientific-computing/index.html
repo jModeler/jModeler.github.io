@@ -118,7 +118,7 @@
   <meta property="og:description" content="Data Scientist"><meta property="og:image" content="/img/icon-192.png">
   <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2021-05-02T00:00:00&#43;00:00">
+  <meta property="og:updated_time" content="2021-05-09T00:00:00&#43;00:00">
   
 
   
@@ -309,6 +309,16 @@
   
 
   
+  
+  <div>
+    <h2><a href="../../post/2021-05-09-dirichlet-distribution-function-speed-test/">Dirichlet Distribution Function: Speed Test</a></h2>
+    <div class="article-style">
+      
+      This post is a continuation of the post that discusses the dirichlet draws function. In this post I compare the speed of this function to other functions that accomplish the same thing in R. First, I revisit the function I wrote in that post:
+#include &lt;RcppArmadillo.h&gt;// [[Rcpp::depends(RcppArmadillo)]]using namespace Rcpp;// [[Rcpp::export]]arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {// get n random draws from the dirichlet distribution// n: number of draws needed// concentration_parameters: self explanatory, needed parameters for the dirichlet// distribution// create a variable to store the length of the concentration_parameters vectorint k = concentration_parameters.
+      
+    </div>
+  </div>
   
   <div>
     <h2><a href="../../post/2021-05-02-explaining-the-dirichlet-draws-function/">Explaining the Dirichlet Draws Function</a></h2>

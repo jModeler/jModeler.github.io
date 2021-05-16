@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Productivity on Journeyman Modeler</title>
+    <link>/tags/productivity/</link>
+    <description>Recent content in Productivity on Journeyman Modeler</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/productivity/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Completing Projects at Work</title>
+      <link>/post/2021-05-16-completing-projects-at-work/</link>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-05-16-completing-projects-at-work/</guid>
+      <description>
+&lt;script src=&#34;../../rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This is a post inspired by a conversation I had with a colleague, Ryan. Over a very short period, he had completed an impressive portfolio of work projects, and always had something better in the pipeline. I asked him what he did when starting on anything, and he very kindly shared his method to get (most) things done at work (and in life, where applicable). In the following post, anything marked in &lt;span style=&#34;color: Chartreuse;&#34;&gt;green&lt;/span&gt; is input from him.&lt;/p&gt;
+&lt;p&gt;Ryan’s method to do anything in life (abstract version):&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Determine what is being asked of you (or what you want to achieve). What problem are you trying to solve? Do not fall victim to the &lt;a href=&#34;https://en.wikipedia.org/wiki/XY_problem&#34;&gt;XY problem&lt;/a&gt;, be very clear about the deliverable expected. Check and re-check (or re-assess, in case this is a personal goal) with your boss/business partner/end goal &lt;span style=&#34;color: Chartreuse;&#34;&gt;regularly&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;With a clear deliverable in mind, now clearly formulate the steps to be taken to get closer to said deliverable&lt;/li&gt;
+&lt;li&gt;Now, do you have all the skills/knowledge to do the steps yourself? Great! Make a plan to work on each step and stick to it. &lt;span style=&#34;color: Chartreuse;&#34;&gt;Try to make a plan on how much work will be required time wise to progress through each step. This will also help you learn how good (or bad) you are at estimating time/specific tasks.&lt;/span&gt;
+&lt;span style=&#34;color: Chartreuse;&#34;&gt; I highly recommend reading &lt;a href=&#34;https://archive.fo/kHhdM&#34;&gt;this blog post&lt;/a&gt; about what to tackle first. He recommends basically making the smallest version of what you need that includes all the component parts. This helps you discover compatibility/integration issues up front that can wreck a project if they’re discovered late.&lt;br /&gt;
+&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;If you see there are gaps in your knowledge, you have two options:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Learn everything you need to know to plug the knowledge gap (&lt;span style=&#34;color: Chartreuse;&#34;&gt;generally terrifying and not recommended&lt;/span&gt;)&lt;/li&gt;
+&lt;li&gt;Find someone else who had the same problem and try to replicate what they’ve done. Google is your friend! (&lt;span style=&#34;color: Chartreuse;&#34;&gt;generally where I start, using a &lt;a href=&#34;https://archive.fo/x5C54&#34;&gt;tracer bullet&lt;/a&gt;&lt;/span&gt;). Once you’ve found a solution, follow the process outlined in step 3. and make progress on your work.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;5&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;As you keep working on your steps, DOCUMENT EVERYTHING. This will help you do the following:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;If you need to (or want to) move on to another project, you can hand this over to someone else and easily create a succession plan.&lt;/li&gt;
+&lt;li&gt;If this project is a personal goal, you have a record of what you did. This will serve as a reference when you need to redo something like this in the future.&lt;/li&gt;
+&lt;li&gt;&lt;span style=&#34;color: Chartreuse;&#34;&gt;If your memory is anything like mine, it’s not great and you work on a lot. Your own documentation will help you know why you did something&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span style=&#34;color: Chartreuse;&#34;&gt;It helps guide others through how to learn a topic&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span style=&#34;color: Chartreuse;&#34;&gt;It can serve as a record of what work was done which can be useful as an archive, or for ideas for other work. Was one process a nightmare that you spent half your time on? Maybe that should be tackled next&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

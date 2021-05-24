@@ -6,10 +6,136 @@
     <description>Recent content in Posts on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 May 2021 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dirichlet Distribution Function: Another Approach</title>
+      <link>/post/2021-05-23-dirichlet-distribution-function-another-approach/</link>
+      <pubDate>Sun, 23 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-05-23-dirichlet-distribution-function-another-approach/</guid>
+      <description>
+&lt;script src=&#34;../rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In this post, I attempt to speed up the dirichlet distribution function I wrote in a &lt;a href=&#34;https://jmodeler.github.io/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&#34;&gt;previous post&lt;/a&gt;. To recall, in a previous &lt;a href=&#34;https://jmodeler.github.io/post/2021-05-09-dirichlet-distribution-function-speed-test/&#34;&gt;post&lt;/a&gt; I compared the relative speed of this function with two others and I found it to be slower. Out of curiosity, I want to see if simple changes can give me the speed up I’m looking for.&lt;/p&gt;
+&lt;p&gt;First, I revisit the function I wrote in that &lt;a href=&#34;https://jmodeler.github.io/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/&#34;&gt;post&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;#include &amp;lt;RcppArmadillo.h&amp;gt;
+// [[Rcpp::depends(RcppArmadillo)]]
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+arma::mat rdirichlet_cpp(int n, arma::vec concentration_parameters) {
+  // get n random draws from the dirichlet distribution
+  // n: number of draws needed
+  // concentration_parameters: self explanatory, needed parameters for the dirichlet
+  // distribution
+  // create a variable to store the length of the concentration_parameters vector
+  int k = concentration_parameters.n_elem;
+  // next, create a matrix that will store the gamma draws
+  // each row in this matrix will be a draw from the gamma distribution
+  arma::mat gamma_draws(n, k, arma::fill::zeros);
+  // create a matrix that stores the dirichlet distribution draws
+  arma::mat dirichlet_draws(n, k, arma::fill::zeros);
+  // create temporary variables that will store values in the loops
+  // vector to store temporary gamma draws
+  NumericVector temp_gamma(n);
+  // variable to store the column sums of the gamma_draws matrix
+  arma::vec temp_sum;
+  // now, loop across the concentration parameters
+  // get gamma draws and fill up the gamma_draws matrix
+  for(int ii = 0; ii &amp;lt; k; ii++) {
+    // get draws from gamma distribution, store in an armadillo vector
+    temp_gamma = rgamma(n, concentration_parameters.at(ii));
+    // temp_gamma is an Rcpp NumericVector, which needs to be converted into an armadillo vector and then
+    // stored in the gamma_draws matrix
+    gamma_draws.col(ii) = as&amp;lt;arma::vec&amp;gt;(temp_gamma);
+  }
+  // now normalize the rows to get the dirichlet draws
+  // element-wise normalization using the each_col() method for a matrix object in armadillo
+  // create the vector of row sums
+  temp_sum = arma::sum(gamma_draws, 1);
+  // now divide each column of gamma_draws with the elements in temp_sum
+  dirichlet_draws = gamma_draws.each_col() / temp_sum;
+  // return this final value
+  return dirichlet_draws;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the previous function, I create a lot of temporary variables (i.e. &lt;span class=&#34;math inline&#34;&gt;\(\texttt{temp_sum}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\texttt{temp_gamma}\)&lt;/span&gt;). Though I do not think this is a factor in slowing down the original function, let’s confirm the hypothesis by testing it out:&lt;/p&gt;
+&lt;pre class=&#34;cpp&#34;&gt;&lt;code&gt;#include &amp;lt;RcppArmadillo.h&amp;gt;
+// [[Rcpp::depends(RcppArmadillo)]]
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+arma::mat rdirichlet_cpp_notemp(int n, arma::vec concentration_parameters) {
+  // get n random draws from the dirichlet distribution
+  // n: number of draws needed
+  // concentration_parameters: self explanatory, needed parameters for the dirichlet
+  // distribution
+  // create a variable to store the length of the concentration_parameters vector
+  int k = concentration_parameters.n_elem;
+  // next, create a matrix that will store the gamma draws
+  // each row in this matrix will be a draw from the gamma distribution
+  arma::mat gamma_draws(n, k, arma::fill::zeros);
+  // create a matrix that stores the dirichlet distribution draws
+  arma::mat dirichlet_draws(n, k, arma::fill::zeros);
+  // now, loop across the concentration parameters
+  // get gamma draws and fill up the gamma_draws matrix
+  for(int ii = 0; ii &amp;lt; k; ii++) {
+    // get draws from gamma distribution
+    // rgamma output is an Rcpp NumericVector, which needs to be converted into an armadillo vector and then
+    // stored in the gamma_draws matrix
+    gamma_draws.col(ii) = as&amp;lt;arma::vec&amp;gt;(rgamma(n, concentration_parameters.at(ii)));
+  }
+  // now normalize the rows to get the dirichlet draws
+  // element-wise normalization using the each_row() method for a matrix object in armadillo
+  // now divide each row of gamma_draws with the elements in temp_sum
+  dirichlet_draws = gamma_draws.each_col() / arma::sum(gamma_draws, 1);
+  // return this final value
+  return dirichlet_draws;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note that I no longer create variables to store gamma draws or the row sums. Let’s check if the results from this function line up first:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(Rcpp)
+library(RcppArmadillo)
+# set number of data points needed
+n &amp;lt;- 100000
+# set dimension of data
+k &amp;lt;- 3
+# generate the concentration parameters 
+alpha &amp;lt;- sample(1:100, k)
+# calculate the actual mean vector
+actual_mean = alpha/sum(alpha)
+# get Dirichlet draws from the C++ function
+dir_draws &amp;lt;- rdirichlet_cpp_notemp(n, alpha)
+# get the column means
+calculated_mean &amp;lt;- colMeans(dir_draws)
+# compare both, should be close
+(actual_mean - calculated_mean)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -9.246821e-06  1.892884e-05 -9.682017e-06&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;They do, now let’s do a speed test.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(Rcpp)
+library(RcppArmadillo)
+library(microbenchmark)
+k &amp;lt;- 10 # length of the concentration parameter
+n &amp;lt;- 100000 # number of draws needed
+alpha &amp;lt;- sample(1:1500, k)
+
+
+microbenchmark(rdirichlet_cpp(n, alpha),
+               rdirichlet_cpp_notemp(n, alpha))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Unit: milliseconds
+##                             expr     min       lq     mean   median       uq
+##         rdirichlet_cpp(n, alpha) 89.0319 93.55645 96.15454 95.11375 97.66125
+##  rdirichlet_cpp_notemp(n, alpha) 89.8521 91.59840 93.89220 93.27085 95.78295
+##       max neval
+##  123.2414   100
+##  102.8396   100&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There does not appear to be a significant speed up (as expected). In future posts, I will attempt to make other changes to speed up this function.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Completing Projects at Work</title>

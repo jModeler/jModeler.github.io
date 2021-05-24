@@ -6,10 +6,37 @@
     <description>Recent content in Categories on Journeyman Modeler</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 May 2021 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bayesian Nonparametrics</title>
+      <link>/categories/bayesian-nonparametrics/</link>
+      <pubDate>Sun, 23 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/bayesian-nonparametrics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Scientific Computing</title>
+      <link>/categories/scientific-computing/</link>
+      <pubDate>Sun, 23 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/scientific-computing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rstats</title>
+      <link>/categories/rstats/</link>
+      <pubDate>Sun, 23 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/rstats/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Productivity</title>
@@ -21,38 +48,11 @@
     </item>
     
     <item>
-      <title>Bayesian Nonparametrics</title>
-      <link>/categories/bayesian-nonparametrics/</link>
-      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/bayesian-nonparametrics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Programming</title>
       <link>/categories/programming/</link>
       <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
       
       <guid>/categories/programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Scientific Computing</title>
-      <link>/categories/scientific-computing/</link>
-      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/scientific-computing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rstats</title>
-      <link>/categories/rstats/</link>
-      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/rstats/</guid>
       <description></description>
     </item>
     

@@ -3,24 +3,77 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2021-05-16T11:07:15-04:00</lastmod>
+    <loc>/categories/bayesian-nonparametrics/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/2021-05-16-completing-projects-at-work/</loc>
-    <lastmod>2021-05-16T11:07:15-04:00</lastmod>
+    <loc>/tags/bayesian-nonparametrics/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/dirichlet-distribution/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/2021-05-23-dirichlet-distribution-function-another-approach/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/gamma-distribution/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2021-05-16T11:07:15-04:00</lastmod>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/scientific-computing/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/rstats/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/rstats/</loc>
+    <lastmod>2021-05-23T21:46:24-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/2021-05-16-completing-projects-at-work/</loc>
     <lastmod>2021-05-16T11:07:15-04:00</lastmod>
   </url>
   
@@ -37,24 +90,6 @@
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2021-05-16T11:07:15-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/bayesian-nonparametrics/</loc>
-    <lastmod>2021-05-09T11:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/bayesian-nonparametrics/</loc>
-    <lastmod>2021-05-09T11:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/post/2021-05-09-dirichlet-distribution-function-speed-test/</loc>
     <lastmod>2021-05-09T11:59:54-04:00</lastmod>
   </url>
@@ -66,32 +101,8 @@
   </url>
   
   <url>
-    <loc>/categories/scientific-computing/</loc>
-    <lastmod>2021-05-09T11:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/scientific-computing/</loc>
     <lastmod>2021-05-09T11:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/rstats/</loc>
-    <lastmod>2021-05-09T11:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/rstats/</loc>
-    <lastmod>2021-05-09T11:59:54-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/dirichlet-distribution/</loc>
-    <lastmod>2021-05-02T20:11:46-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -103,12 +114,6 @@
   <url>
     <loc>/post/2021-04-25-dirichlet-distribution-draws-function-with-rcpp-rcpparmadillo/</loc>
     <lastmod>2021-04-25T21:07:12-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/gamma-distribution/</loc>
-    <lastmod>2021-04-25T21:07:12-04:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
